@@ -238,4 +238,4 @@ _Pvt_Extensions
 **/Web.config
 Art_Gallery_RoughRiders/Art_Gallery_RoughRiders/Web.config
 *.config
-
+**/*.config
