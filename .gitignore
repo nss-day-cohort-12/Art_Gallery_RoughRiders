@@ -235,4 +235,7 @@ _Pvt_Extensions
 # FAKE - F# Make
 .fake/
 
-Web.config
+**/Web.config
+Art_Gallery_RoughRiders/Art_Gallery_RoughRiders/Web.config
+*.config
+**/*.config
