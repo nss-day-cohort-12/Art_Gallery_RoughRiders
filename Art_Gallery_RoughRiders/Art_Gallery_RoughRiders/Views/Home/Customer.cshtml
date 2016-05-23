@@ -1,0 +1,23 @@
+﻿@model List<Art_Gallery_RoughRiders.ViewModels.ArtDisplayViewModel>
+@{
+    ViewBag.Title = "Customer";
+}
+
+<h2>Customer</h2>
+<table class="table">
+
+@foreach (var item in Model)
+{
+    <tr>
+        <td>
+            <h3>Title: </h3>
+            @Html.DisplayFor(modelItem => item.ArtWorkTitle)
+        </td>
+        <td>
+            <h3>Artist: </h3>
+            @Html.DisplayFor(modelItem => item.ArtistName)
+        </td>
+    </tr>
+}
+</table>
+
