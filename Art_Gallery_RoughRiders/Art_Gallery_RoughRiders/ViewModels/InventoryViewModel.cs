@@ -5,10 +5,11 @@ using System.Web;
 
 namespace Art_Gallery_RoughRiders.ViewModels
 {
-    public class ArtDisplayViewModel
+    public class InventoryViewModel
     {
-        public int ArtId { get; set; }
+        public int IdArtPiece { get; set; }
         public string   ArtWorkTitle { get; set; }
-        public string   ArtistName { get; set; }
+        public string   Artist { get; set; }
+        public int   Edition { get; set; }
     }
 }
