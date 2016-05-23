@@ -1,7 +1,30 @@
-﻿
+﻿@model List<Art_Gallery_RoughRiders.ViewModels.InventoryViewModel>
 @{
     ViewBag.Title = "Inventory";
 }
 
 <h2>Inventory</h2>
+<table class="table">
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <h3>Title: </h3>
+                @Html.DisplayFor(modelItem => item.ArtWorkTitle)
+            </td>
+            <td>
+                <h3>Artist: </h3>
+                @Html.DisplayFor(modelItem => item.Artist)
+            </td>
+            <td>
+                <h3>Edition Number: </h3>
+                @Html.DisplayFor(modelItem => item.Edition)
+            </td>
+            <td>
+                @*@Html.ActionLink("Show Details", "ArtDetails", new { artId = item.ArtId })*@
+            </td>
+        </tr>
+    }
+</table>
 
