@@ -1,0 +1,39 @@
+﻿@model List<Art_Gallery_RoughRiders.ViewModels.ArtDetailsViewModel>
+@{
+    ViewBag.Title = "Customer";
+}
+
+<h2>Customer</h2>
+<table class="table">
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <h3>Title: </h3>
+                @Html.DisplayFor(modelItem => item.ArtWorkTitle)
+            </td>
+            <td>
+                <img src="@Html.DisplayFor(modelItem => item.ArtPieceLocation)" />
+            </td>
+            <td>
+                <h3>Price: </h3>
+                @Html.DisplayFor(modelItem => item.ArtPiecePrice)
+            </td>
+            <td>
+                <h3>Dimensions: </h3>
+                @Html.DisplayFor(modelItem => item.ArtWorkDimensions)
+            </td>
+            <td>
+                <h3>Inventory Count: </h3>
+                @Html.DisplayFor(modelItem => item.InventoryCount)
+            </td>
+            <td>
+                <h3>Location: </h3>
+                @Html.DisplayFor(modelItem => item.ArtPieceLocation)
+            </td>
+        </tr>
+    }
+</table>
+
+
