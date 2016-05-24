@@ -6,13 +6,51 @@
 <h2>AddPainting</h2>
 @using (Html.BeginForm())
 {
-    @Html.Label("")
-    @*@Html.EditorFor(model => model.??????)*@
+    //Artist
 
-    foreach(var a in Model.ExistingArtist)
-    {
-        @*@Html.DropDownList("Choose an Artist", Model.ExistingArtist)*@
+    @Html.Label("Artist Name")
+    @Html.EditorFor(model => model.newArtist.ArtistName)
 
-    }
+    @Html.Label("Birth Year")
+    @Html.EditorFor(model => model.newArtist.ArtistBirthYear)
+
+    @Html.Label("Death Year")
+    @Html.EditorFor(model => model.newArtist.ArtistDeathYear)
+
+
+    //ArtWork
+
+    @Html.Label("Art Work Title")
+    @Html.EditorFor(model => model.ArtWork.ArtWorkTitle)
+
+    @Html.Label("Art Work Year")
+    @Html.EditorFor(model => model.ArtWork.ArtWorkYear)
+
+    @Html.Label("Art Work Medium")
+    @Html.EditorFor(model => model.ArtWork.ArtWorkMedium)
+
+    @Html.Label("Art Work Diminsions")
+    @Html.EditorFor(model => model.ArtWork.ArtWorkDimensions)
+
+    
+
+    //ArtPiece
+
+
+    @Html.Label("Image")
+    @Html.EditorFor(model => model.ArtPiece.ArtPieceImage)
+
+    @Html.Label("Date Edition Was Created")
+    @Html.EditorFor(model => model.ArtPiece.ArtPieceDateCreated)
+
+    @Html.Label("Price")
+    @Html.EditorFor(model => model.ArtPiece.ArtPiecePrice)
+
+    @Html.Label("Location")
+    @Html.EditorFor(model => model.ArtPiece.ArtPieceLocation)
+
+    <input type="submit" value="Register" />
+
 }
+        @*@Html.DropDownList("Choose an Artist", Model.ExistingArtist)*@
 
