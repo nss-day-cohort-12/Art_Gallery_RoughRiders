@@ -1,0 +1,18 @@
+﻿@model Art_Gallery_RoughRiders.ViewModels.AddArtViewModel
+@{
+    ViewBag.Title = "AddPainting";
+}
+
+<h2>AddPainting</h2>
+@using (Html.BeginForm())
+{
+    @Html.Label("")
+    @*@Html.EditorFor(model => model.??????)*@
+
+    foreach(var a in Model.ExistingArtist)
+    {
+        @*@Html.DropDownList("Choose an Artist", Model.ExistingArtist)*@
+
+    }
+}
+

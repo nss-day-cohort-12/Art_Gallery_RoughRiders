@@ -38,5 +38,48 @@ namespace Art_Gallery_RoughRiders.Controllers
             return View(allArtPieces);
 
         }
+
+        [HttpGet]
+        public ActionResult AddPainting()
+        {
+            var ExistingArtists = (from a in _context.Artist
+                                   select a).ToList();
+
+
+            //Artist existingArtsit = new Artist
+            //{
+            //    ArtistName = ExistingArtists
+            //};
+
+            AddArtViewModel av = new AddArtViewModel
+            {
+                ExistingArtist = ExistingArtists
+            };
+
+            var gsa = 4;
+            return View(av);
+        }
     }
 }
+
+
+
+//[HttpPost]
+//public ActionResult CreatePet(Pet pet)
+//{
+//    if (ModelState.IsValid)
+//    {
+//        Pet newPet = new Models.Pet
+//        {
+//            PetName = pet.PetName,
+//            IdVet = pet.IdVet,
+//            Species = pet.Species,
+//            Breed = pet.Breed
+//        };
+//        _context.Pet.Add(newPet);
+//        _context.SaveChanges();
+//        return RedirectToAction("Index");
+//    }
+
+//    return View();
+//}
