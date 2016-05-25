@@ -151,6 +151,8 @@
     <Compile Include="ViewModels\ArtDisplayViewModel.cs" />
     <Compile Include="ViewModels\ArtistViewModel.cs" />
     <Compile Include="ViewModels\InventoryViewModel.cs" />
+    <Compile Include="ViewModels\SalesArtYTDViewModel.cs" />
+    <Compile Include="ViewModels\YTDSalesViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
@@ -168,6 +170,7 @@
     <Content Include="Views\Owner\OwnerIndex.cshtml" />
     <Content Include="Views\Owner\Inventory.cshtml" />
     <Content Include="Views\Owner\AddPainting.cshtml" />
+    <Content Include="Views\Owner\Accounting.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
