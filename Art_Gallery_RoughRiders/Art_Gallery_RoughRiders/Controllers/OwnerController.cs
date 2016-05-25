@@ -148,14 +148,6 @@ namespace Art_Gallery_RoughRiders.Controllers
                                select new
                                {
                                    IdArtWork = aw.IdArtWork,
-                                   IdArtist = aw.IdArtist,
-                                   ArtWorkTitle = aw.ArtWorkTitle,
-                                   ArtWorkYear = aw.ArtWorkYear,
-                                   ArtWorkMedium = aw.ArtWorkMedium,
-                                   ArtWorkDimensions = aw.ArtWorkDimensions,
-                                   ArtWorkNumMade = aw.ArtWorkNumMade,
-                                   ArtWorkNumInventory = aw.ArtWorkNumInventory,
-                                   ArtWorkNumSold = aw.ArtWorkNumSold
                                }).Single();
 
                 //Set local artpiece model to the data set by the user, passed into the AddPaiting override method.
