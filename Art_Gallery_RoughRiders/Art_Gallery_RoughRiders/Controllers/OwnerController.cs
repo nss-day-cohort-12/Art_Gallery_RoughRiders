@@ -66,33 +66,71 @@ namespace Art_Gallery_RoughRiders.Controllers
         [HttpPost]
         public ActionResult AddPainting(AddArtViewModel Art)
         {
+            // Set the instance of a local view model to set the ID of either the existing artist, or the new artist we will create
+            ArtistViewModel local_artist = new ArtistViewModel();
+
             if (ModelState.IsValid)
             {
-                //Set local artist model to the data set by the user, passed into the add paiting override method.
-                Artist artist = new Artist
+
+                // If the artist the user entered already exists, use that artist's ID
+                var _artistNameCheck = (from a in _context.Artist
+                                        select new
+                                        {
+                                            IdArtist = a.IdArtist,
+                                            ArtistName = a.ArtistName
+                                        }).ToList();
+
+                bool NameCheck = false;
+                foreach (var item in _artistNameCheck)
                 {
-                    ArtistName = Art.newArtist.ArtistName,
-                    ArtistBirthYear = Art.newArtist.ArtistBirthYear,
-                    ArtistDeathYear = Art.newArtist.ArtistDeathYear
-                };
-                _context.Artist.Add(artist);
-                _context.SaveChanges();
+
+                    if (item.ArtistName == Art.newArtist.ArtistName)
+                    {
+                        NameCheck = true;
+                    }
+                }
+
+                
+                    // This is the case where the artist already exists in the database
+                    if (NameCheck == true)
+                    {
+                        // Set a new instance of a private artist with the properties from the database
+                        var _artist = (from a in _context.Artist
+                                       where a.ArtistName == Art.newArtist.ArtistName
+                                       select new ArtistViewModel
+                                       {
+                                           ID = a.IdArtist
+                                       }).Single();
+                        local_artist = _artist;
+                    }
+                    else
+                    {
+                        //Since this is a new Artist: Set local artist model to the data set by the user, passed into the add paiting override method.
+                        Artist artist = new Artist
+                        {
+                            ArtistName = Art.newArtist.ArtistName,
+                            ArtistBirthYear = Art.newArtist.ArtistBirthYear,
+                            ArtistDeathYear = Art.newArtist.ArtistDeathYear
+                        };
+                        _context.Artist.Add(artist);
+                        _context.SaveChanges();
+
+                        var _artist = (from a in _context.Artist
+                                       where a.ArtistName == Art.newArtist.ArtistName
+                                       select new ArtistViewModel
+                                       {
+                                           ID = a.IdArtist
+                                       }).Single();
+                        local_artist = _artist;
+                    }
+                
 
                 //Set a private variable = to the artist the user just created.
-                var _artist = (from a in _context.Artist
-                               where a.ArtistName == Art.newArtist.ArtistName
-                               select new Artist
-                               {
-                                   IdArtist = a.IdArtist,
-                                   ArtistName = a.ArtistName,
-                                   ArtistBirthYear = a.ArtistBirthYear,
-                                   ArtistDeathYear = a.ArtistDeathYear
-                               }).Single();
                 
                 //Set local artwork model to the data set by the user, passed into the add paiting override method.
                 ArtWork artwork = new ArtWork
                 {
-                    IdArtist = _artist.IdArtist,
+                    IdArtist = local_artist.ID,
                     ArtWorkDimensions = Art.ArtWork.ArtWorkDimensions,
                     ArtWorkTitle = Art.ArtWork.ArtWorkTitle,
                     ArtWorkYear = Art.ArtWork.ArtWorkYear,
@@ -107,7 +145,7 @@ namespace Art_Gallery_RoughRiders.Controllers
                 //Set a private variable = to the artwork the user just created.
                 var _artWork = (from aw in _context.ArtWork
                                where aw.ArtWorkTitle == Art.ArtWork.ArtWorkTitle
-                               select new ArtWork
+                               select new
                                {
                                    IdArtWork = aw.IdArtWork,
                                    IdArtist = aw.IdArtist,
