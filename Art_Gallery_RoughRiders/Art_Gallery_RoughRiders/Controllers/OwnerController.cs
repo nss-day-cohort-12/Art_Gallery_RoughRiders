@@ -30,10 +30,12 @@ namespace Art_Gallery_RoughRiders.Controllers
 
                            select new InventoryViewModel
                            {
+                               ArtPiecePrice = ap.ArtPiecePrice,
                                IdArtPiece = ap.IdArtPiece,
                                Artist = ar.ArtistName,
                                ArtWorkTitle = aw.ArtWorkTitle,
-                               Edition = ap.ArtPieceEditionNum
+                               Edition = ap.ArtPieceEditionNum,
+                               ArtGalleryCost = ap.ArtPiecePrice/2
                            }).ToList();
 
             return View(allArtPieces);
@@ -169,6 +171,59 @@ namespace Art_Gallery_RoughRiders.Controllers
 
             return View();
         }
+        
+        //View all sold artwork, cost, and profit, total sales(week/month/year), current profit (week/month/year))
+        public ActionResult Accounting()
+        {
+            
+
+
+            var artSold = (from ap in _context.ArtPiece
+                           join aw in _context.ArtWork
+                           on ap.IdArtWork equals aw.IdArtWork
+
+                           join a in _context.Artist
+                           on aw.IdArtist equals a.IdArtist
+
+                           where ap.ArtPieceSold == true
+                           select new InventoryViewModel
+                           {
+                               ArtPiecePrice = ap.ArtPiecePrice,
+                               IdArtPiece = ap.IdArtPiece,
+                               Artist = a.ArtistName,
+                               ArtWorkTitle = aw.ArtWorkTitle,
+                               Edition = ap.ArtPieceEditionNum,
+                               ArtGalleryCost = ap.ArtPiecePrice / 2
+                           }).ToList();
+
+            //Calculate gallery ytd cost/profit/total sales and put in private variables.
+            decimal _cost = 0;
+            decimal _profit = 0;
+            decimal _totalSales = 0;
+
+            foreach(var item in artSold)
+            {
+                _cost += item.ArtGalleryCost;
+                _totalSales += item.ArtPiecePrice;
+            }
+             _profit += _totalSales - _cost;
+
+            YTDSalesViewModel YTD = new YTDSalesViewModel
+            {
+                Cost = _cost,
+                Profit = _profit,
+                TotalSales = _totalSales
+            };
+            //Create a granfather VM that holds 2 ViewModels.
+            SalesArtYTDViewModel SA_YTD = new SalesArtYTDViewModel
+            {
+                IVM = artSold,
+                YTD = YTD
+            };
+
+            return View(SA_YTD);
+        }
+
     }
 }
 

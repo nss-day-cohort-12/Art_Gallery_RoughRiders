@@ -4,22 +4,54 @@
 }
 
 <h2>Inventory</h2>
+<table>
+    <tr>
+        <td>
+            <a href="@Url.Action("Accounting", "Owner")" class="thumbnail">Accounting</a>
+        </td>
+        <td>
+            <a href="@Url.Action("AgentRoster", "Owner")" class="thumbnail">Agent Roster</a>
+        </td>
+    </tr>
+</table>
+<table class="table">
+    <tr>
+        <td>
+            <h3>Artist:</h3>
+        </td>
+        <td>
+            <h3>Title:</h3> 
+        </td>
+        <td>
+            <h3>Edition:</h3> 
+        </td>
+        <td>
+            <h3>Cost:</h3>
+        </td>
+        <td>
+            <h3>Retail:</h3>
+        </td>
+    </tr>
+</table>
 <table class="table">
 
     @foreach (var item in Model)
     {
         <tr>
             <td>
-                <h3>Title: </h3>
-                @Html.DisplayFor(modelItem => item.ArtWorkTitle)
-            </td>
-            <td>
-                <h3>Artist: </h3>
                 @Html.DisplayFor(modelItem => item.Artist)
             </td>
             <td>
-                <h3>Edition Number: </h3>
+                @Html.DisplayFor(modelItem => item.ArtWorkTitle)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Edition)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ArtPiecePrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ArtGalleryCost)
             </td>
             <td>
                 @*@Html.ActionLink("Show Details", "ArtDetails", new { artId = item.ArtId })*@
