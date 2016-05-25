@@ -145,6 +145,7 @@
     <Compile Include="ViewModels\AddArtViewModel.cs" />
     <Compile Include="ViewModels\ArtDetailsViewModel.cs" />
     <Compile Include="ViewModels\ArtDisplayViewModel.cs" />
+    <Compile Include="ViewModels\ArtistViewModel.cs" />
     <Compile Include="ViewModels\InventoryViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
