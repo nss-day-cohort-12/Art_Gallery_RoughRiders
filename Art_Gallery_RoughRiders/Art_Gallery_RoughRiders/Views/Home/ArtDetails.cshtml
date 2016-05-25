@@ -1,4 +1,4 @@
-﻿@model List<Art_Gallery_RoughRiders.ViewModels.ArtDetailsViewModel>
+﻿@model Art_Gallery_RoughRiders.ViewModels.ArtDetailsViewModel
 @{
     ViewBag.Title = "Customer";
 }
@@ -6,34 +6,36 @@
 <h2>Customer</h2>
 <table class="table">
 
-    @foreach (var item in Model)
-    {
+    
         <tr>
             <td>
                 <h3>Title: </h3>
-                @Html.DisplayFor(modelItem => item.ArtWorkTitle)
+                @Html.Raw(Model.ArtWorkTitle)
             </td>
             <td>
-                <img src="@Html.DisplayFor(modelItem => item.ArtPieceLocation)" />
+                @*<img src="@Html.DisplayFor(modelItem => item.ArtPieceImage)" />*@
+              <img width="50%" src="@Url.Content(Model.ArtPieceImage)"/>
             </td>
             <td>
-                <h3>Price: </h3>
-                @Html.DisplayFor(modelItem => item.ArtPiecePrice)
+                <strong>Price: </strong>
+                @*@Html.Display(Model.ArtPiecePrice)*@
+              @String.Format("{0:n0}", Model.ArtPiecePrice)
             </td>
             <td>
-                <h3>Dimensions: </h3>
-                @Html.DisplayFor(modelItem => item.ArtWorkDimensions)
+                <strong>Dimensions: </strong>
+                @Html.Raw(Model.ArtWorkDimensions)
             </td>
             <td>
-                <h3>Inventory Count: </h3>
-                @Html.DisplayFor(modelItem => item.InventoryCount)
+                <strong>Inventory Count: </strong>
+                @*@Html.Display(Model.InventoryCount)*@
+              @String.Format("{0:n0}", Model.InventoryCount)
             </td>
             <td>
-                <h3>Location: </h3>
-                @Html.DisplayFor(modelItem => item.ArtPieceLocation)
+                <strong>Location: </strong>
+                @Html.Raw(Model.ArtPieceLocation)
             </td>
         </tr>
-    }
+    
 </table>
 
 

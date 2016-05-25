@@ -55,8 +55,8 @@ namespace Art_Gallery_RoughRiders.Controllers
                                  ap.ArtPiecePrice,
                                  aw.ArtWorkYear,
                                  aw.ArtWorkDimensions,
-                                 ap.ArtPieceLocation
-
+                                 ap.ArtPieceLocation,
+                                 aw.ArtWorkMedium
                              }
                              into g
 
@@ -67,13 +67,15 @@ namespace Art_Gallery_RoughRiders.Controllers
                                  ArtWorkYear = g.Key.ArtWorkYear,
                                  ArtPieceLocation = g.Key.ArtPieceLocation,
                                  ArtPiecePrice = g.Key.ArtPiecePrice,
+                                 ArtPieceImage = g.Key.ArtPieceImage,
+                                 ArtWorkDimensions = g.Key.ArtWorkDimensions,
+                                 ArtWorkMedium = g.Key.ArtWorkMedium,
                                  InventoryCount = g.Count()
 
 
                              });
-            var artdetails = artDetail;
-
-            return View(artDetail.ToList());
+            
+            return View(artDetail.Single());
         }
     }
 }
