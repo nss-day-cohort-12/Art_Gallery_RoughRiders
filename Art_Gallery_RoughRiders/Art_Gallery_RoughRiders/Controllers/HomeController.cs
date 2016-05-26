@@ -17,20 +17,43 @@ namespace Art_Gallery_RoughRiders.Controllers
         {
             return View();
         }
-        public ActionResult Customer()
+        public ActionResult Customer(string searchString)
         {
-            //Get access to all the art.
-            var artWork = (from aw in _context.ArtWork
-                           join ar in _context.Artist
-                           on aw.IdArtist equals ar.IdArtist
-                           select new ArtDisplayViewModel
-                           {
-                               ArtId = aw.IdArtWork,
-                               ArtWorkTitle = aw.ArtWorkTitle,
-                               ArtistName = ar.ArtistName
-                           }).ToList();
+          // SELECT
+          //   ArtWork.IdArtWork, 
+          //   ArtWork.ArtWorkTitle,
+          //   ArtPiece.ArtPieceImage
+          // FROM ArtWork
+          // INNER JOIN Artist ON Artist.IdArtist = ArtWork.IdArtist
+          // INNER JOIN ArtPiece ON ArtPiece.IdArtWork = ArtWork.IdArtWork
+          // GROUP BY ArtWork.IdArtWork, ArtWork.ArtWorkTitle, ArtPiece.ArtPieceImage
 
-            return View(artWork);
+          var artWork = (from aw in _context.ArtWork
+                          join ar in _context.Artist
+                          on aw.IdArtist equals ar.IdArtist
+                          join ap in _context.ArtPiece
+                          on aw.IdArtWork equals ap.IdArtWork
+                          group ap by new
+                          {
+                            aw.IdArtWork,
+                            aw.ArtWorkTitle,
+                            ar.ArtistName,
+                            ap.ArtPieceImage
+                          }
+                          into g
+                          select new ArtDisplayViewModel
+                          {
+                              ArtId = g.Key.IdArtWork,
+                              ArtWorkTitle = g.Key.ArtWorkTitle,
+                              ArtistName = g.Key.ArtistName,
+                              ArtWorkImage = g.Key.ArtPieceImage
+                          });
+
+          if (!String.IsNullOrEmpty(searchString))
+          {
+            artWork = artWork.Where(a => a.ArtistName.Contains(searchString));
+          }
+          return View(artWork.ToList());
         }
 
         //Pass in the ID of the single piece of art that the user clicked on. Use the ID to filter data.
@@ -62,6 +85,7 @@ namespace Art_Gallery_RoughRiders.Controllers
 
                              select new ArtDetailsViewModel
                              {
+                                 IdArtWork = g.Key.IdArtWork,
                                  ArtWorkTitle=g.Key.ArtWorkTitle,
                                  Artist = g.Key.ArtistName,
                                  ArtWorkYear = g.Key.ArtWorkYear,

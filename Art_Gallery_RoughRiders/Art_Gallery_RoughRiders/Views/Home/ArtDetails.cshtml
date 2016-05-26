@@ -14,7 +14,7 @@
             </td>
             <td>
                 @*<img src="@Html.DisplayFor(modelItem => item.ArtPieceImage)" />*@
-              <img width="50%" src="@Url.Content(Model.ArtPieceImage)"/>
+              <img width="70%" src="@Url.Content(Model.ArtPieceImage)"/>
             </td>
             <td>
                 <strong>Price: </strong>
@@ -37,5 +37,7 @@
         </tr>
     
 </table>
-
+<p>
+  <a href='@String.Format("/Home/Customer#a{0}", Model.IdArtWork)'>Back to List</a>
+</p>
 

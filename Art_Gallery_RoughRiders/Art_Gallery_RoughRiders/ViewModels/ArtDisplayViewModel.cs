@@ -10,5 +10,6 @@ namespace Art_Gallery_RoughRiders.ViewModels
         public int ArtId { get; set; }
         public string   ArtWorkTitle { get; set; }
         public string   ArtistName { get; set; }
+        public string   ArtWorkImage { get; set; }
     }
 }
