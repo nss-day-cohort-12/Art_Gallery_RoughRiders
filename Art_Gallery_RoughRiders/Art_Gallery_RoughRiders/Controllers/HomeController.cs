@@ -25,6 +25,7 @@ namespace Art_Gallery_RoughRiders.Controllers
                               on aw.IdArtist equals ar.IdArtist
                               join ap in _context.ArtPiece
                               on aw.IdArtWork equals ap.IdArtWork
+                              where ap.ArtPieceSold == false
                               group ap by new
                               {
                                 aw.IdArtWork,
