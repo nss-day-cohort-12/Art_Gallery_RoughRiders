@@ -39,11 +39,11 @@
     @foreach (var item in Model)
     {
       
-        <div class="col-md-2" style="margin-bottom:5px; height:400px; text-align:right">
+        <div class="col-md-2" style="margin-bottom:5px; height:200px; text-align:right">
           <a name='@String.Format("a{0}", item.ArtId)'></a>
-          <img width="70%" src="@Url.Content(item.ArtWorkImage)" />
+          <img height="115px" src="@Url.Content(item.ArtWorkImage)" />
         </div>
-      <div class="col-md-2" style="margin-bottom:5px; height:400px">
+      <div class="col-md-2" style="margin-bottom:5px; height:200px">
         <strong>@Html.DisplayFor(modelItem => item.ArtWorkTitle)</strong><br />
         @Html.DisplayFor(modelItem => item.ArtistName)<br />
         $@Html.DisplayFor(modelItem => item.ArtWorkPrice)<br />
