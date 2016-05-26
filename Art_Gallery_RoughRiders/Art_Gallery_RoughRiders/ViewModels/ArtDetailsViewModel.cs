@@ -7,6 +7,7 @@ namespace Art_Gallery_RoughRiders.ViewModels
 {
     public class ArtDetailsViewModel
     {
+        public int IdArtWork { get; set; }
         public string ArtWorkTitle { get; set; }
         public string Artist { get; set; }
         public int ArtWorkYear { get; set; } 

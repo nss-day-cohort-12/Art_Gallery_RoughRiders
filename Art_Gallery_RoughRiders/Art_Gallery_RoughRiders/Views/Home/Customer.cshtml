@@ -1,26 +1,35 @@
 ﻿@model List<Art_Gallery_RoughRiders.ViewModels.ArtDisplayViewModel>
 @{
-    ViewBag.Title = "Customer";
+    ViewBag.Title = "Artwork Inventory";
 }
 
-<h2>Customer</h2>
-<table class="table">
-
-@foreach (var item in Model)
+<h2>Art Gallery</h2>
+@using (Html.BeginForm())
 {
-    <tr>
-        <td>
-            <h3>Title: </h3>
-            @Html.DisplayFor(modelItem => item.ArtWorkTitle)
-        </td>
-        <td>
-            <h3>Artist: </h3>
-            @Html.DisplayFor(modelItem => item.ArtistName)
-        </td>
-        <td>
-            @Html.ActionLink("Show Details", "ArtDetails", new { artId = item.ArtId})
-        </td>
-    </tr>
+  <p>
+    Artist: @Html.TextBox("SearchString")
+    <input type="submit" value="Search" />
+  </p>
 }
-</table>
+@*<table class="table">*@
+<div class="container-fluid">
+  <div class="row">
+    @foreach (var item in Model)
+    {
+      
+        <div class="col-md-2" style="margin-bottom:5px; height:400px; text-align:right">
+          <a name='@String.Format("a{0}", item.ArtId)'></a>
+          <img width="70%" src="@Url.Content(item.ArtWorkImage)" />
+        </div>
+      <div class="col-md-2" style="margin-bottom:5px; height:400px">
+        <strong>@Html.DisplayFor(modelItem => item.ArtWorkTitle)</strong><br />
+        @Html.DisplayFor(modelItem => item.ArtistName)<br />
+        @Html.ActionLink("Show Details", "ArtDetails", new { artId = item.ArtId })
+        
+      </div>
+      
+    }
+  </div>
+</div>
+@*</table>*@
 
