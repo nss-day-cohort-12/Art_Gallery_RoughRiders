@@ -11,5 +11,7 @@ namespace Art_Gallery_RoughRiders.ViewModels
         public string   ArtWorkTitle { get; set; }
         public string   Artist { get; set; }
         public int   Edition { get; set; }
+        public decimal ArtPiecePrice { get; set; }
+        public decimal ArtGalleryCost { get; set; }
     }
 }
