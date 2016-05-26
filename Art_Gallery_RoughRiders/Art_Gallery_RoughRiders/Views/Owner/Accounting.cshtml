@@ -1,7 +1,43 @@
-﻿
+﻿@model Art_Gallery_RoughRiders.ViewModels.SalesArtYTDViewModel
 @{
     ViewBag.Title = "Accounting";
 }
 
 <h2>Accounting</h2>
+
+<table class="table">
+    <tr>
+        <td>
+            <h4>Total Cost:</h4>
+            $@String.Format("{0:n0}", Model.YTD.Cost)
+        </td>
+        <td>
+            <h4>Total Sales:</h4>
+            $@String.Format("{0:n0}", Model.YTD.TotalSales)
+        </td>
+        <td>
+            <h4>Total Profit:</h4>
+            $@String.Format("{0:n0}", Model.YTD.Profit)
+        </td>
+    </tr>
+</table>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-3"><h4>Artist:</h4></div>
+        <div class="col-md-3"><h4>Title:</h4></div>
+        <div class="col-md-3"><h4>Retail Price:</h4></div>
+    </div>
+    @foreach (var item in Model.IVM)
+    {
+     <div class="row">
+         <div class="col-md-3">@Html.DisplayFor(modelItem => item.Artist)</div>
+         <div class="col-md-3">@Html.DisplayFor(modelItem => item.ArtWorkTitle)</div>
+         <div class="col-md-3">$@Html.DisplayFor(modelItem => item.ArtPiecePrice)</div>
+     </div>   
+    }
+
+</div>
+    
 

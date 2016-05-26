@@ -15,8 +15,10 @@ namespace Art_Gallery_RoughRiders.Models
     public DbSet<ArtWork> ArtWork { get; set; }
     public DbSet<Customer> Customer { get; set; }
     public DbSet<Invoice> Invoice { get; set; }
+    public DbSet<InvoiceArtPiece> InvoiceArtPiece { get; set; }
 
-    protected override void OnModelCreating(DbModelBuilder modelBuilder)
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
     {
       modelBuilder.Entity<Agent>()
                .ToTable("Agent")
@@ -45,6 +47,10 @@ namespace Art_Gallery_RoughRiders.Models
       modelBuilder.Entity<Invoice>()
                .ToTable("Invoice")
                .HasKey(i => i.IdInvoice);
-    }
+
+      modelBuilder.Entity<InvoiceArtPiece>()
+         .ToTable("InvoiceArtPiece")
+         .HasKey(a => a.IdInvoiceArtPiece);
+        }
   }
 }

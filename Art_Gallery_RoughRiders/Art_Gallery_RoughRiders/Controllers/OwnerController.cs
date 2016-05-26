@@ -35,7 +35,9 @@ namespace Art_Gallery_RoughRiders.Controllers
                                Artist = ar.ArtistName,
                                ArtWorkTitle = aw.ArtWorkTitle,
                                Edition = ap.ArtPieceEditionNum,
-                               ArtGalleryCost = ap.ArtPiecePrice/2
+                               ArtGalleryCost = ap.ArtPiecePrice/2,
+                               IMG = ap.ArtPieceImage,
+                               isSold = ap.ArtPieceSold ?"Sold":""
                            }).ToList();
 
             return View(allArtPieces);
@@ -224,27 +226,42 @@ namespace Art_Gallery_RoughRiders.Controllers
             return View(SA_YTD);
         }
 
+        public ActionResult AgentRoster()
+        {
+            var AgentList = (from a in _context.Agent
+                             select new AgentRosterViewModel
+                             {
+                                IdAgent = a.IdAgent,
+                                AgentName = a.AgentFirstName + " " + a.AgentLastName
+                             }).ToList();
+            return View(AgentList);
+        }
+
+        public ActionResult AgentInvoiceDetails(int agentId)
+        {
+            //Get access to Invoice, InvoiceArtPiece, Agent, Customer.
+
+            var AgentAccounting = (from a in _context.Agent
+                                   join i in _context.Invoice
+                                   on a.IdAgent equals i.IdAgent
+
+                                   join c in _context.Customer
+                                   on i.IdCustomer equals c.IdCustomer
+
+                                   join iap in _context.InvoiceArtPiece
+                                   on i.IdInvoice equals iap.IdInvoice
+
+                                   join ap in _context.ArtPiece
+                                   on iap.IdArtPiece equals ap.IdArtPiece
+
+                                   where a.IdAgent == agentId
+                                   select new
+                                   {
+                                   }).ToList();
+
+            return View();
+        }
+
     }
 }
 
-
-
-//[HttpPost]
-//public ActionResult CreatePet(Pet pet)
-//{
-//    if (ModelState.IsValid)
-//    {
-//        Pet newPet = new Models.Pet
-//        {
-//            PetName = pet.PetName,
-//            IdVet = pet.IdVet,
-//            Species = pet.Species,
-//            Breed = pet.Breed
-//        };
-//        _context.Pet.Add(newPet);
-//        _context.SaveChanges();
-//        return RedirectToAction("Index");
-//    }
-
-//    return View();
-//}
