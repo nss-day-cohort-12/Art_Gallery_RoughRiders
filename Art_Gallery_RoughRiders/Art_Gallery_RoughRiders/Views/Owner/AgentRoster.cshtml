@@ -1,0 +1,16 @@
+﻿@model List<Art_Gallery_RoughRiders.ViewModels.AgentRosterViewModel>
+@{
+    ViewBag.Title = "AgentRoster";
+}
+
+<h2>AgentRoster</h2>
+<div class="container">
+    @foreach (var item in Model)
+    {
+        <div class="row">
+            <div class="col-md-4">@Html.DisplayFor(modelItem => item.AgentName)</div>
+            <div class="col-md-2">@Html.ActionLink("Show Invoice/Sales", "AgentInvoiceDetails", new { agentId = item.IdAgent })</div>
+        </div>
+    }
+</div>
+

@@ -7,8 +7,8 @@ namespace Art_Gallery_RoughRiders.ViewModels
 {
     public class YTDSalesViewModel
     {
-        public string Cost { get; set; }
-        public string Profit { get; set; }
-        public string TotalSales { get; set; }
+        public decimal Cost { get; set; }
+        public decimal Profit { get; set; }
+        public decimal TotalSales { get; set; }
     }
 }

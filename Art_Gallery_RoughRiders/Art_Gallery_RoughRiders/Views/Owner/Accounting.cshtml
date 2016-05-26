@@ -9,25 +9,35 @@
     <tr>
         <td>
             <h4>Total Cost:</h4>
-            @Html.Display(Model.YTD.Cost)
+            $@String.Format("{0:n0}", Model.YTD.Cost)
         </td>
         <td>
             <h4>Total Sales:</h4>
-            @Html.Display(Model.YTD.TotalSales)
+            $@String.Format("{0:n0}", Model.YTD.TotalSales)
         </td>
         <td>
             <h4>Total Profit:</h4>
-            @Html.Display(Model.YTD.Profit)
+            $@String.Format("{0:n0}", Model.YTD.Profit)
         </td>
     </tr>
 </table>
 
-<table class="table">
-    
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-3"><h4>Artist:</h4></div>
+        <div class="col-md-3"><h4>Title:</h4></div>
+        <div class="col-md-3"><h4>Retail Price:</h4></div>
+    </div>
     @foreach (var item in Model.IVM)
     {
-        <tr>
-            <td></td>
-        </tr>
+     <div class="row">
+         <div class="col-md-3">@Html.DisplayFor(modelItem => item.Artist)</div>
+         <div class="col-md-3">@Html.DisplayFor(modelItem => item.ArtWorkTitle)</div>
+         <div class="col-md-3">$@Html.DisplayFor(modelItem => item.ArtPiecePrice)</div>
+     </div>   
     }
-</table>
+
+</div>
+    
+
