@@ -1,7 +1,32 @@
-﻿
+﻿@model Art_Gallery_RoughRiders.ViewModels.SalesArtYTDViewModel
 @{
     ViewBag.Title = "Accounting";
 }
 
 <h2>Accounting</h2>
 
+<table class="table">
+    <tr>
+        <td>
+            <h4>Total Cost:</h4>
+            @Html.Display(Model.YTD.Cost)
+        </td>
+        <td>
+            <h4>Total Sales:</h4>
+            @Html.Display(Model.YTD.TotalSales)
+        </td>
+        <td>
+            <h4>Total Profit:</h4>
+            @Html.Display(Model.YTD.Profit)
+        </td>
+    </tr>
+</table>
+
+<table class="table">
+    @*@foreach(var item in Model.YTD)
+    {
+        <tr>
+            <td></td>
+        </tr>
+    }*@
+</table>

@@ -210,9 +210,9 @@ namespace Art_Gallery_RoughRiders.Controllers
 
             YTDSalesViewModel YTD = new YTDSalesViewModel
             {
-                Cost = _cost,
-                Profit = _profit,
-                TotalSales = _totalSales
+                Cost = _cost.ToString(),
+                Profit = _profit.ToString(),
+                TotalSales = _totalSales.ToString()
             };
             //Create a granfather VM that holds 2 ViewModels.
             SalesArtYTDViewModel SA_YTD = new SalesArtYTDViewModel
