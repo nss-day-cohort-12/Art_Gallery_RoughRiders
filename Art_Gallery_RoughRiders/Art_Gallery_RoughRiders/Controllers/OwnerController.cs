@@ -239,27 +239,56 @@ namespace Art_Gallery_RoughRiders.Controllers
 
         public ActionResult AgentInvoiceDetails(int agentId)
         {
-            //Get access to Invoice, InvoiceArtPiece, Agent, Customer.
+            var ArtPieceInvoiceList = (from i in _context.Invoice
+                                       join iap in _context.InvoiceArtPiece
+                                       on i.IdInvoice equals iap.IdInvoice
 
-            var AgentAccounting = (from a in _context.Agent
+                                       join ap in _context.ArtPiece
+                                       on iap.IdArtPiece equals ap.IdArtPiece
+
+                                       join aw in _context.ArtWork
+                                       on ap.IdArtWork equals aw.IdArtWork
+
+                                       join ar in _context.Artist
+                                       on aw.IdArtist equals ar.IdArtist
+
+                                       where i.IdAgent == agentId
+                                       select new ArtPieceInfoViewModel
+                                       {
+                                           IdArtWork = aw.IdArtWork,
+                                           ArtPiecePrice = ap.ArtPiecePrice,
+                                           ArtPieceLoaction = ap.ArtPieceLocation,
+                                           ArtPieceEditionNum = ap.ArtPieceEditionNum,
+                                           ArtWorkTitle = aw.ArtWorkTitle,
+                                           ArtistName = ar.ArtistName
+                                       }).ToList();
+
+
+        //Get access to Invoice, InvoiceArtPiece, Agent, Customer, and ArtPiece.
+        var AgentInvoiceAndCustomerInfo = (from a in _context.Agent
                                    join i in _context.Invoice
                                    on a.IdAgent equals i.IdAgent
 
                                    join c in _context.Customer
                                    on i.IdCustomer equals c.IdCustomer
 
-                                   join iap in _context.InvoiceArtPiece
-                                   on i.IdInvoice equals iap.IdInvoice
-
-                                   join ap in _context.ArtPiece
-                                   on iap.IdArtPiece equals ap.IdArtPiece
-
                                    where a.IdAgent == agentId
-                                   select new
+                                   select new AgentCustomerViewModel
                                    {
-                                   }).ToList();
+                                        IdInvoice = i.IdInvoice,
+                                        AgentName = a.AgentFirstName + " " + a.AgentLastName,
+                                        IdCustomer = c.IdCustomer,
+                                        CustomerName = c.CustomerFirstName + " " + c.CustomerLastName,
+                                        CustomerAddress = c.CustomerAddress,
+                                        CustomerPhoneNumber = c.CustomerPhoneNumber
+                                   }).Single();
 
-            return View();
+            AgentInvoiceAllInfo Invoice = new AgentInvoiceAllInfo
+            {
+                ArtPieceList = ArtPieceInvoiceList,
+                AgentCustomerVM = AgentInvoiceAndCustomerInfo
+            };
+            return View(Invoice);
         }
 
     }
