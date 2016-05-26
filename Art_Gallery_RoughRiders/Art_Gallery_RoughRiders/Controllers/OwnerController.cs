@@ -35,7 +35,9 @@ namespace Art_Gallery_RoughRiders.Controllers
                                Artist = ar.ArtistName,
                                ArtWorkTitle = aw.ArtWorkTitle,
                                Edition = ap.ArtPieceEditionNum,
-                               ArtGalleryCost = ap.ArtPiecePrice/2
+                               ArtGalleryCost = ap.ArtPiecePrice/2,
+                               IMG = ap.ArtPieceImage,
+                               isSold = ap.ArtPieceSold ?"Sold":""
                            }).ToList();
 
             return View(allArtPieces);
@@ -210,9 +212,9 @@ namespace Art_Gallery_RoughRiders.Controllers
 
             YTDSalesViewModel YTD = new YTDSalesViewModel
             {
-                Cost = _cost,
-                Profit = _profit,
-                TotalSales = _totalSales
+                Cost = _cost.ToString(),
+                Profit = _profit.ToString(),
+                TotalSales = _totalSales.ToString()
             };
             //Create a granfather VM that holds 2 ViewModels.
             SalesArtYTDViewModel SA_YTD = new SalesArtYTDViewModel
