@@ -22,6 +22,16 @@
   </p>
 }
 
+@using (Html.BeginForm())
+{
+  <p>
+    Min Price: @Html.TextBox("minPrice")
+    Max Price: @Html.TextBox("maxPrice")
+    @Html.Hidden("searchId", 3)
+    <input type="submit" value="Search" />
+  </p>
+}
+
 
 @*<table class="table">*@
 <div class="container-fluid">
@@ -36,6 +46,7 @@
       <div class="col-md-2" style="margin-bottom:5px; height:400px">
         <strong>@Html.DisplayFor(modelItem => item.ArtWorkTitle)</strong><br />
         @Html.DisplayFor(modelItem => item.ArtistName)<br />
+        $@Html.DisplayFor(modelItem => item.ArtWorkPrice)<br />
         @Html.ActionLink("Show Details", "ArtDetails", new { artId = item.ArtId })
         
       </div>

@@ -17,7 +17,11 @@ namespace Art_Gallery_RoughRiders.Controllers
         {
             return View();
         }
-        public ActionResult Customer(string searchString, string searchMedia, int? searchId)
+        public ActionResult Customer(string searchString, 
+                                     string searchMedia, 
+                                     int? searchId,
+                                     int? minPrice,
+                                     int? maxPrice)
         {
 
           var artWork = (from aw in _context.ArtWork
@@ -32,7 +36,8 @@ namespace Art_Gallery_RoughRiders.Controllers
                                 aw.ArtWorkTitle,
                                 ar.ArtistName,
                                 ap.ArtPieceImage,
-                                aw.ArtWorkMedium
+                                aw.ArtWorkMedium,
+                                ap.ArtPiecePrice
                               }
                               into g
                               select new ArtDisplayViewModel
@@ -41,7 +46,8 @@ namespace Art_Gallery_RoughRiders.Controllers
                                   ArtWorkTitle = g.Key.ArtWorkTitle,
                                   ArtistName = g.Key.ArtistName,
                                   ArtWorkImage = g.Key.ArtPieceImage,
-                                  ArtWorkMedium = g.Key.ArtWorkMedium
+                                  ArtWorkMedium = g.Key.ArtWorkMedium,
+                                  ArtWorkPrice = g.Key.ArtPiecePrice
                               });
  
           // Filter by artist name
@@ -55,6 +61,24 @@ namespace Art_Gallery_RoughRiders.Controllers
           {
             artWork = artWork.Where(aw => aw.ArtWorkMedium.Contains(searchMedia));
           }
+
+          // Filter by price range
+          if ((minPrice != null || maxPrice != null) && searchId == 3)
+          {
+            if (minPrice == null)
+            {
+              artWork = artWork.Where(aw => aw.ArtWorkPrice <= maxPrice);
+            }
+            else if (maxPrice == null)
+            {
+              artWork = artWork.Where(aw => aw.ArtWorkPrice >= minPrice);
+            }
+            else
+            {
+              artWork = artWork.Where(aw => aw.ArtWorkPrice <= maxPrice && aw.ArtWorkPrice >= minPrice);
+            }
+          }
+
           ModelState.Clear();
           return View(artWork.ToList());
         }

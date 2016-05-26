@@ -13,6 +13,7 @@ namespace Art_Gallery_RoughRiders.ViewModels
         public string   ArtistName { get; set; }
         public string   ArtWorkImage { get; set; }
         public string   ArtWorkMedium { get; set; }
+        public Decimal ArtWorkPrice { get; set; }
         //public List<SelectListItem> Media { get; set; }
     }
 }
