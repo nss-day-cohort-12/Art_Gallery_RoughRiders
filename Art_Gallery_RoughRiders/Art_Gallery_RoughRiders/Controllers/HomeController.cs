@@ -17,42 +17,44 @@ namespace Art_Gallery_RoughRiders.Controllers
         {
             return View();
         }
-        public ActionResult Customer(string searchString)
+        public ActionResult Customer(string searchString, string searchMedia, int? searchId)
         {
-          // SELECT
-          //   ArtWork.IdArtWork, 
-          //   ArtWork.ArtWorkTitle,
-          //   ArtPiece.ArtPieceImage
-          // FROM ArtWork
-          // INNER JOIN Artist ON Artist.IdArtist = ArtWork.IdArtist
-          // INNER JOIN ArtPiece ON ArtPiece.IdArtWork = ArtWork.IdArtWork
-          // GROUP BY ArtWork.IdArtWork, ArtWork.ArtWorkTitle, ArtPiece.ArtPieceImage
 
           var artWork = (from aw in _context.ArtWork
-                          join ar in _context.Artist
-                          on aw.IdArtist equals ar.IdArtist
-                          join ap in _context.ArtPiece
-                          on aw.IdArtWork equals ap.IdArtWork
-                          group ap by new
-                          {
-                            aw.IdArtWork,
-                            aw.ArtWorkTitle,
-                            ar.ArtistName,
-                            ap.ArtPieceImage
-                          }
-                          into g
-                          select new ArtDisplayViewModel
-                          {
-                              ArtId = g.Key.IdArtWork,
-                              ArtWorkTitle = g.Key.ArtWorkTitle,
-                              ArtistName = g.Key.ArtistName,
-                              ArtWorkImage = g.Key.ArtPieceImage
-                          });
-
-          if (!String.IsNullOrEmpty(searchString))
+                              join ar in _context.Artist
+                              on aw.IdArtist equals ar.IdArtist
+                              join ap in _context.ArtPiece
+                              on aw.IdArtWork equals ap.IdArtWork
+                              group ap by new
+                              {
+                                aw.IdArtWork,
+                                aw.ArtWorkTitle,
+                                ar.ArtistName,
+                                ap.ArtPieceImage,
+                                aw.ArtWorkMedium
+                              }
+                              into g
+                              select new ArtDisplayViewModel
+                              {
+                                  ArtId = g.Key.IdArtWork,
+                                  ArtWorkTitle = g.Key.ArtWorkTitle,
+                                  ArtistName = g.Key.ArtistName,
+                                  ArtWorkImage = g.Key.ArtPieceImage,
+                                  ArtWorkMedium = g.Key.ArtWorkMedium
+                              });
+ 
+          // Filter by artist name
+          if (!string.IsNullOrEmpty(searchString) && searchId == 1)
           {
-            artWork = artWork.Where(a => a.ArtistName.Contains(searchString));
+            artWork = artWork.Where(aw => aw.ArtistName.Contains(searchString));
           }
+
+          // Filter by artwork medium
+          if (!string.IsNullOrEmpty(searchMedia) && searchId == 2)
+          {
+            artWork = artWork.Where(aw => aw.ArtWorkMedium.Contains(searchMedia));
+          }
+          ModelState.Clear();
           return View(artWork.ToList());
         }
 
@@ -82,7 +84,6 @@ namespace Art_Gallery_RoughRiders.Controllers
                                  aw.ArtWorkMedium
                              }
                              into g
-
                              select new ArtDetailsViewModel
                              {
                                  IdArtWork = g.Key.IdArtWork,
@@ -95,8 +96,6 @@ namespace Art_Gallery_RoughRiders.Controllers
                                  ArtWorkDimensions = g.Key.ArtWorkDimensions,
                                  ArtWorkMedium = g.Key.ArtWorkMedium,
                                  InventoryCount = g.Count()
-
-
                              });
             
             return View(artDetail.Single());

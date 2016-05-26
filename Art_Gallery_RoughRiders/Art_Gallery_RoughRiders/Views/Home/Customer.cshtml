@@ -7,10 +7,22 @@
 @using (Html.BeginForm())
 {
   <p>
-    Artist: @Html.TextBox("SearchString")
+    Artist: @Html.TextBox("searchString")
+    @Html.Hidden("searchId", 1)
     <input type="submit" value="Search" />
   </p>
 }
+
+@using (Html.BeginForm())
+{
+  <p>
+    Medium: @Html.TextBox("searchMedia")
+    @Html.Hidden("searchId", 2)
+    <input type="submit" value="Search" />
+  </p>
+}
+
+
 @*<table class="table">*@
 <div class="container-fluid">
   <div class="row">
