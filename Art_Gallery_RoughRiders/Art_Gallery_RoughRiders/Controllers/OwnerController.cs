@@ -35,7 +35,9 @@ namespace Art_Gallery_RoughRiders.Controllers
                                Artist = ar.ArtistName,
                                ArtWorkTitle = aw.ArtWorkTitle,
                                Edition = ap.ArtPieceEditionNum,
-                               ArtGalleryCost = ap.ArtPiecePrice/2
+                               ArtGalleryCost = ap.ArtPiecePrice/2,
+                               IMG = ap.ArtPieceImage,
+                               isSold = ap.ArtPieceSold ?"Sold":""
                            }).ToList();
 
             return View(allArtPieces);
