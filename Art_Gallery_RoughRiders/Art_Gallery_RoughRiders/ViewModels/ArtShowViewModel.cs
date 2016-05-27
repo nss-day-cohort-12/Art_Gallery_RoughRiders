@@ -8,6 +8,7 @@ namespace Art_Gallery_RoughRiders.ViewModels
 {
   public class ArtShowViewModel
   {
+    public int ShowId { get; set; }
     public string ShowName { get; set; }
     public string ShowLocation { get; set; }
     public List<Artist> ShowArtists { get; set; }

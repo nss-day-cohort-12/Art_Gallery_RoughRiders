@@ -129,28 +129,28 @@ namespace Art_Gallery_RoughRiders.Controllers
     public ActionResult Events()
     {
       var events = (from ash in _context.ArtShow
-                    join asar in _context.ArtShowArtistRoster
-                    on ash.IdArtShow equals asar.IdArtShow
-                    join asag in _context.ArtShowAgentRoster
-                    on ash.IdArtShow equals asag.IdArtShow
-                    join ar in _context.Artist
-                    on asar.IdArtist equals ar.IdArtist
-                    join ag in _context.Agent
-                    on asag.IdAgent equals ag.IdAgent
-                    group ash by new
-                    {
-                      ash.ArtShowName,
-                      ash.ArtShowLocation
-                    }
-                    into g
+
                     select new ArtShowViewModel
                     {
-                      ShowName = g.Key.ArtShowName,
-                      ShowLocation = g.Key.ArtShowLocation
+                      ShowId = ash.IdArtShow,
+                      ShowName = ash.ArtShowName,
+                      ShowLocation = ash.ArtShowLocation,
+
+                      ShowArtists = (from a in _context.Artist
+                                     join asar in _context.ArtShowArtistRoster
+                                     on a.IdArtist equals asar.IdArtist
+                                     where asar.IdArtShow == ash.IdArtShow
+                                     select a).ToList(),
+
+                      ShowAgents = (from a in _context.Agent
+                                    join asag in _context.ArtShowAgentRoster
+                                    on a.IdAgent equals asag.IdAgent
+                                    where asag.IdArtShow == ash.IdArtShow
+                                    select a).ToList()
                     }
 
-      );
-        
+      ).ToList();
+
       return View(events);
     }
   }
