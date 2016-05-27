@@ -178,6 +178,7 @@
     <Content Include="Views\Owner\Accounting.cshtml" />
     <Content Include="Views\Owner\AgentRoster.cshtml" />
     <Content Include="Views\Owner\AgentInvoiceDetails.cshtml" />
+    <Content Include="Views\Home\Events.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -125,5 +125,11 @@ namespace Art_Gallery_RoughRiders.Controllers
             
             return View(artDetail.Single());
         }
+
+    public ActionResult Events()
+    {
+
+      return View();
     }
+  }
 }
