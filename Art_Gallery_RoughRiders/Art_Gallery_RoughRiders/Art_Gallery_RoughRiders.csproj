@@ -141,6 +141,8 @@
     <Compile Include="Models\Artist.cs" />
     <Compile Include="Models\ArtPiece.cs" />
     <Compile Include="Models\ArtShow.cs" />
+    <Compile Include="Models\ArtShowAgentRoster.cs" />
+    <Compile Include="Models\ArtShowArtistRoster.cs" />
     <Compile Include="Models\ArtWork.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Invoice.cs" />
