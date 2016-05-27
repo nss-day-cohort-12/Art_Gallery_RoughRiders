@@ -125,7 +125,9 @@
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -139,6 +141,8 @@
     <Compile Include="Models\Artist.cs" />
     <Compile Include="Models\ArtPiece.cs" />
     <Compile Include="Models\ArtShow.cs" />
+    <Compile Include="Models\ArtShowAgentRoster.cs" />
+    <Compile Include="Models\ArtShowArtistRoster.cs" />
     <Compile Include="Models\ArtWork.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Invoice.cs" />
@@ -155,6 +159,7 @@
     <Compile Include="ViewModels\ArtDisplayViewModel.cs" />
     <Compile Include="ViewModels\ArtistViewModel.cs" />
     <Compile Include="ViewModels\ArtPieceInfoViewModel.cs" />
+    <Compile Include="ViewModels\ArtShowViewModel.cs" />
     <Compile Include="ViewModels\InventoryViewModel.cs" />
     <Compile Include="ViewModels\SalesArtYTDViewModel.cs" />
     <Compile Include="ViewModels\YTDSalesViewModel.cs" />
@@ -178,6 +183,7 @@
     <Content Include="Views\Owner\Accounting.cshtml" />
     <Content Include="Views\Owner\AgentRoster.cshtml" />
     <Content Include="Views\Owner\AgentInvoiceDetails.cshtml" />
+    <Content Include="Views\Home\Events.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -125,5 +125,33 @@ namespace Art_Gallery_RoughRiders.Controllers
             
             return View(artDetail.Single());
         }
+
+    public ActionResult Events()
+    {
+      var events = (from ash in _context.ArtShow
+
+                    select new ArtShowViewModel
+                    {
+                      ShowId = ash.IdArtShow,
+                      ShowName = ash.ArtShowName,
+                      ShowLocation = ash.ArtShowLocation,
+
+                      ShowArtists = (from a in _context.Artist
+                                     join asar in _context.ArtShowArtistRoster
+                                     on a.IdArtist equals asar.IdArtist
+                                     where asar.IdArtShow == ash.IdArtShow
+                                     select a).ToList(),
+
+                      ShowAgents = (from a in _context.Agent
+                                    join asag in _context.ArtShowAgentRoster
+                                    on a.IdAgent equals asag.IdAgent
+                                    where asag.IdArtShow == ash.IdArtShow
+                                    select a).ToList()
+                    }
+
+      ).ToList();
+
+      return View(events);
     }
+  }
 }

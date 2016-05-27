@@ -1,0 +1,35 @@
+﻿@model List<Art_Gallery_RoughRiders.ViewModels.ArtShowViewModel>
+@{
+    ViewBag.Title = "Events";
+}
+
+<h2>Events</h2>
+
+<table class="table">
+  <tr>
+    <th>Event</th>
+    <th>Location</th>
+    <th>Artists</th>
+    <th>Agents</th>
+  </tr>
+  @foreach (var item in Model)
+  {
+    <tr>
+      <td>@Html.DisplayFor(Modelitem => item.ShowName)</td>
+      <td>@Html.DisplayFor(Modelitem => item.ShowLocation)</td>
+      <td>
+        @foreach (var artist in item.ShowArtists)
+        {
+          @Html.DisplayFor(Modelitem => artist.ArtistName)<br />
+        }
+      </td>
+      <td>
+        @foreach (var agent in item.ShowAgents)
+        {
+          @Html.DisplayFor(Modelitem => agent.AgentLastName)<br />
+        }
+      </td>
+    </tr>
+  }
+
+</table>
