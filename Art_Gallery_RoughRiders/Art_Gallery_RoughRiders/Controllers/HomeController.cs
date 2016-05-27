@@ -128,8 +128,16 @@ namespace Art_Gallery_RoughRiders.Controllers
 
     public ActionResult Events()
     {
+      var events = (from ash in _context.ArtShow
+                    join asar in _context.ArtShowAgentRoster
+                    on ash.IdArtist equals ash.IdArtist
 
-      return View();
+      );
+        
+
+        
+
+      return View(events.toList());
     }
   }
 }
