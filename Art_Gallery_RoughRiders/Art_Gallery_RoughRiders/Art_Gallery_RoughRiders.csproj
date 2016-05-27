@@ -151,11 +151,14 @@
     <Compile Include="ViewModels\AgentCustomerViewModel.cs" />
     <Compile Include="ViewModels\AgentInvoiceAllInfo.cs" />
     <Compile Include="ViewModels\AgentRosterViewModel.cs" />
+    <Compile Include="ViewModels\APinInvoice.cs" />
     <Compile Include="ViewModels\ArtDetailsViewModel.cs" />
     <Compile Include="ViewModels\ArtDisplayViewModel.cs" />
     <Compile Include="ViewModels\ArtistViewModel.cs" />
     <Compile Include="ViewModels\ArtPieceInfoViewModel.cs" />
+    <Compile Include="ViewModels\InvoiceListViewModel.cs" />
     <Compile Include="ViewModels\InventoryViewModel.cs" />
+    <Compile Include="ViewModels\InvoiceViewModel.cs" />
     <Compile Include="ViewModels\SalesArtYTDViewModel.cs" />
     <Compile Include="ViewModels\YTDSalesViewModel.cs" />
   </ItemGroup>

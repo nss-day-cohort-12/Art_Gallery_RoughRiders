@@ -1,11 +1,22 @@
-﻿@model Art_Gallery_RoughRiders.ViewModels.AgentInvoiceAllInfo
+﻿@model Art_Gallery_RoughRiders.ViewModels.InvoiceListViewModel
 @{
     ViewBag.Title = "AgentInvoiceDetails";
 }
 
-<h2>Invoice #@Html.DisplayFor(modelItem => Model.AgentCustomerVM.IdInvoice) Details</h2>
+<h2>Invoice Details</h2>
 
-<div class="container">
+
+@foreach (var item in Model.InvoiceModels)
+{
+    <p>@Html.DisplayFor(Modelitem => item.agentName)</p>
+    <p>@Html.DisplayFor(modelItem => item.customer)</p>
+    <p>@Html.DisplayFor(modelItem => item.IdInvoice)</p>
+}
+
+
+
+
+@*<div class="container">
     <div class="row">
 
         <div class="col-md-6">
@@ -39,4 +50,4 @@
             </div>
         </div>
     </div>
-</div>
+</div>*@

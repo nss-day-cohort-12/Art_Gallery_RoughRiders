@@ -239,58 +239,78 @@ namespace Art_Gallery_RoughRiders.Controllers
 
         public ActionResult AgentInvoiceDetails(int agentId)
         {
-            var ArtPieceInvoiceList = (from i in _context.Invoice
-                                       join iap in _context.InvoiceArtPiece
-                                       on i.IdInvoice equals iap.IdInvoice
 
-                                       join ap in _context.ArtPiece
-                                       on iap.IdArtPiece equals ap.IdArtPiece
+            var invoiceDetails = (from c in _context.Customer
+                                  join i in _context.Invoice
+                                  on c.IdCustomer equals i.IdCustomer
 
-                                       join aw in _context.ArtWork
-                                       on ap.IdArtWork equals aw.IdArtWork
+                                  join ag in _context.Agent
+                                  on i.IdAgent equals ag.IdAgent
 
-                                       join ar in _context.Artist
-                                       on aw.IdArtist equals ar.IdArtist
+                                  join iap in _context.InvoiceArtPiece
+                                  on i.IdInvoice equals iap.IdInvoice
 
-                                       where i.IdAgent == agentId
-                                       select new ArtPieceInfoViewModel
-                                       {
-                                           IdArtWork = aw.IdArtWork,
-                                           ArtPiecePrice = ap.ArtPiecePrice,
-                                           ArtPieceLoaction = ap.ArtPieceLocation,
-                                           ArtPieceEditionNum = ap.ArtPieceEditionNum,
-                                           ArtWorkTitle = aw.ArtWorkTitle,
-                                           ArtistName = ar.ArtistName
-                                       }).ToList();
+                                  join ap in _context.ArtPiece
+                                  on iap.IdArtPiece equals ap.IdArtPiece
+
+                                  join aw in _context.ArtWork
+                                  on ap.IdArtWork equals aw.IdArtWork
+
+                                  join ar in _context.Artist
+                                  on aw.IdArtist equals ar.IdArtist
+
+                                  where ag.IdAgent == agentId
+                                  group new
+                                  {
+                                      i.IdInvoice,
+                                      ag.AgentFirstName,
+                                      ag.AgentLastName,
+                                      c.CustomerFirstName,
+                                      c.CustomerLastName,
+                                      c.CustomerAddress,
+                                      c.CustomerPhoneNumber,
+                                      i.PaymentMethod,
+                                      ap.IdArtPiece,
+                                      aw.ArtWorkTitle,
+                                      ar.ArtistName
+
+                                  }
+                                  by i.IdInvoice into newGroup
+                                  select newGroup).ToList();
 
 
-        //Get access to Invoice, InvoiceArtPiece, Agent, Customer, and ArtPiece.
-        var AgentInvoiceAndCustomerInfo = (from a in _context.Agent
-                                   join i in _context.Invoice
-                                   on a.IdAgent equals i.IdAgent
+            // Create a father VM that will cointains a list of tickets
+            InvoiceListViewModel Allinvoices = new InvoiceListViewModel();
+            // Create a local VM that IS a list of tickets
+            List<InvoiceViewModel> _localInvoices = new List<InvoiceViewModel>();
 
-                                   join c in _context.Customer
-                                   on i.IdCustomer equals c.IdCustomer
+            foreach (var item in invoiceDetails)
+            {  //create a new view model
+                InvoiceViewModel ivm = new InvoiceViewModel();
+                ivm.IdInvoice = item.First().IdInvoice;
+                ivm.agentName = item.First().AgentFirstName + " " + item.First().AgentLastName;
+                ivm.customerName = item.First().CustomerFirstName + " " + item.First().CustomerLastName;
+                ivm.customerAddress = item.First().CustomerAddress;
+                ivm.customerPhoneNumber = item.First().CustomerPhoneNumber;
+                ivm.paymentMethod = item.First().PaymentMethod;
 
-                                   where a.IdAgent == agentId
-                                   select new AgentCustomerViewModel
-                                   {
-                                        IdInvoice = i.IdInvoice,
-                                        AgentName = a.AgentFirstName + " " + a.AgentLastName,
-                                        IdCustomer = c.IdCustomer,
-                                        CustomerName = c.CustomerFirstName + " " + c.CustomerLastName,
-                                        CustomerAddress = c.CustomerAddress,
-                                        CustomerPhoneNumber = c.CustomerPhoneNumber
-                                   }).Single();
-
-            AgentInvoiceAllInfo Invoice = new AgentInvoiceAllInfo
-            {
-                ArtPieceList = ArtPieceInvoiceList,
-                AgentCustomerVM = AgentInvoiceAndCustomerInfo
-            };
-            return View(Invoice);
+                List<APinInvoice> art = new List<APinInvoice>();
+                // Get acces to each painting sold in the invoice
+                foreach (var curInvoice in item)
+                {  //add painting to the view model of each invoice
+                    APinInvoice singleAP = new APinInvoice();
+                    singleAP.Artist = curInvoice.ArtistName;
+                    singleAP.ArtWorkTitle = curInvoice.ArtWorkTitle;
+                    singleAP.ArtPiecePrice = curInvoice.IdArtPiece;
+                    art.Add(singleAP);
+                    //ivm.IdartPiece.Add(curInvoice.IdArtPiece);
+                }
+                ivm.ArtWork = art;
+                _localInvoices.Add(ivm);
+            }
+            Allinvoices.InvoiceModels = _localInvoices;
+            return View(Allinvoices);
         }
-
     }
 }
 
