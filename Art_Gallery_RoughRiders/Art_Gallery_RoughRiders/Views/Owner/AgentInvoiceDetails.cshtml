@@ -1,42 +1,52 @@
-﻿@model Art_Gallery_RoughRiders.ViewModels.AgentInvoiceAllInfo
+﻿@model Art_Gallery_RoughRiders.ViewModels.InvoiceListViewModel
 @{
     ViewBag.Title = "AgentInvoiceDetails";
 }
 
-<h2>Invoice #@Html.DisplayFor(modelItem => Model.AgentCustomerVM.IdInvoice) Details</h2>
+<h2>Invoice Details</h2>
 
 <div class="container">
-    <div class="row">
-
-        <div class="col-md-6">
-            <div class="col-md-12">
+    @foreach(var invoice in Model.InvoiceModels)
+    {
+        <div class="row">
+            <div class="col-md-6">
+                <h3>Invoice Number: @Html.DisplayFor(modelItem => invoice.IdInvoice)</h3>
                 <h4>Sales Agent:</h4>
-                <p>@Html.DisplayFor(modelItem => Model.AgentCustomerVM.AgentName)</p>
-            </div>
-            <div class="col-md-12">
+                <p>@Html.DisplayFor(modelItem => invoice.agentName)</p>
                 <h4>Customer Info:</h4>
-                <p>@Html.DisplayFor(modelItem => Model.AgentCustomerVM.CustomerName)</p>
-                <p>@Html.DisplayFor(modelItem => Model.AgentCustomerVM.CustomerAddress)</p>
-                <p>@Html.DisplayFor(modelItem => Model.AgentCustomerVM.CustomerPhoneNumber)</p>
+                <p>@Html.DisplayFor(modelItem => invoice.customerName)</p>
+                <p>@Html.DisplayFor(modelItem => invoice.customerAddress)</p>
+                <p>@Html.DisplayFor(modelItem => invoice.customerPhoneNumber)</p>
             </div>
-        </div>
-
-        <div class="col-md-6">
-            <div class="col-md-12">
-                @foreach (var item in Model.ArtPieceList)
-                {
-                    <h4>Art Piece Title:</h4>
-                    <p>@Html.DisplayFor(modelItem => item.ArtWorkTitle)</p>
+            <div class="col-md-6">
+                <h3>Art Pieces Sold:</h3>
+                <div class="col-md-4">
+                    <h4>Title:</h4>
+                </div>
+                <div class="col-md-4">
                     <h4>Artist:</h4>
-                    <p>@Html.DisplayFor(modelItem => item.ArtistName)</p>
-                    <h4>Art Piece Edition #:</h4>
-                    <p>@Html.DisplayFor(modelItem => item.ArtPieceEditionNum)</p>
-                    <h4>Location Sold:</h4>
-                    <p>@Html.DisplayFor(modelItem => item.ArtPieceLoaction)</p>
+                </div>
+                <div class="col-md-4">
                     <h4>Price:</h4>
-                    <p>$@Html.DisplayFor(modelItem => item.ArtPiecePrice)</p>
+                </div>
+
+                @foreach(var artpiece in invoice.ArtWork)
+                {
+                    <div class="col-md-4">
+                        <p>@Html.DisplayFor(modelItem => artpiece.ArtWorkTitle)</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p>@Html.DisplayFor(modelItem => artpiece.Artist)</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p>$@Html.DisplayFor(modelItem => artpiece.ArtPiecePrice)</p>
+                    </div>
                 }
+                <div class="col-md-4">
+                    <h3>Total:</h3>
+                    <h3>$@Html.Raw(Model.TotalSales).00</h3>
+                </div>
             </div>
         </div>
-    </div>
+    }
 </div>

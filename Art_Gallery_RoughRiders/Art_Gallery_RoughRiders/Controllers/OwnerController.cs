@@ -283,7 +283,7 @@ namespace Art_Gallery_RoughRiders.Controllers
       InvoiceListViewModel Allinvoices = new InvoiceListViewModel();
       // Create a local VM that IS a list of tickets
       List<InvoiceViewModel> _localInvoices = new List<InvoiceViewModel>();
-
+      decimal TotalSales = new decimal();
       foreach (var item in invoiceDetails)
       {  //create a new view model
         InvoiceViewModel ivm = new InvoiceViewModel();
@@ -293,7 +293,7 @@ namespace Art_Gallery_RoughRiders.Controllers
         ivm.customerAddress = item.First().CustomerAddress;
         ivm.customerPhoneNumber = item.First().CustomerPhoneNumber;
         ivm.paymentMethod = item.First().PaymentMethod;
-
+        decimal invoiceTotalSales = new decimal();
         List<APinInvoice> art = new List<APinInvoice>();
         // Get acces to each painting sold in the invoice
         foreach (var curInvoice in item)
@@ -303,11 +303,14 @@ namespace Art_Gallery_RoughRiders.Controllers
           singleAP.ArtWorkTitle = curInvoice.ArtWorkTitle;
           singleAP.ArtPiecePrice = curInvoice.IdArtPiece;
           art.Add(singleAP);
+          invoiceTotalSales += singleAP.ArtPiecePrice;
           //ivm.IdartPiece.Add(curInvoice.IdArtPiece);
         }
+        TotalSales += invoiceTotalSales;
         ivm.ArtWork = art;
         _localInvoices.Add(ivm);
       }
+      Allinvoices.TotalSales = TotalSales;
       Allinvoices.InvoiceModels = _localInvoices;
       return View(Allinvoices);
     }
