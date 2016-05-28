@@ -14,6 +14,7 @@ namespace Art_Gallery_RoughRiders.ViewModels
     public string customerAddress { get; set; }
     public string customerPhoneNumber { get; set; }
     public string paymentMethod { get; set; }
+    public decimal invoiceTotalSales { get; set; }
     public List<APinInvoice> ArtWork { get; set; }
   }
 }

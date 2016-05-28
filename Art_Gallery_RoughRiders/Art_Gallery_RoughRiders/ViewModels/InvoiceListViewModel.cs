@@ -8,5 +8,6 @@ namespace Art_Gallery_RoughRiders.ViewModels
   public class InvoiceListViewModel
   {
     public List<InvoiceViewModel> InvoiceModels { get; set; }
+    public decimal TotalSales { get; set; }
   }
 }
