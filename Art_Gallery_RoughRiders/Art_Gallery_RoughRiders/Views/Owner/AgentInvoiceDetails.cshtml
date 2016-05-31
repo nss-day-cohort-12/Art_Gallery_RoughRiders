@@ -44,10 +44,12 @@
                 }
                 <div class="col-md-4">
                     <h3>Total:</h3>
-                    <h3>$@Html.Raw(Model.TotalSales).00</h3>
+                    <h3>$@Html.Raw(invoice.invoiceTotalSales).00</h3>
                 </div>
             </div>
         </div>
         <hr>
     }
+    <h4>Agent Total Sales:</h4>
+    <h3>$@Html.Raw(Model.TotalSales).00</h3>
 </div>

@@ -306,6 +306,7 @@ namespace Art_Gallery_RoughRiders.Controllers
           invoiceTotalSales += singleAP.ArtPiecePrice;
           //ivm.IdartPiece.Add(curInvoice.IdArtPiece);
         }
+        ivm.invoiceTotalSales = invoiceTotalSales;
         TotalSales += invoiceTotalSales;
         ivm.ArtWork = art;
         _localInvoices.Add(ivm);
