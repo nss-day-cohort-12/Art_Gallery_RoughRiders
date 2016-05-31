@@ -352,18 +352,82 @@ namespace Art_Gallery_RoughRiders.Controllers
         [HttpPost]
         public ActionResult SignUp(CurrentCustomersViewModel ccvm)
         {
-            var idartsit = ccvm.artId;
-            var newInvoice = (from c in _context.Customer
+            var artId = ccvm.artId;
+            // Get access to the piece sold
+            var PieceSold = (from ap in _context.ArtPiece
 
-                              join ag in _context.Agent
-                              on c.IdAgent equals ag.IdAgent
+                             join aw in _context.ArtWork
+                             on ap.IdArtWork equals aw.IdArtWork
 
-                              select new
-                              {
+                             where ap.IdArtPiece == ccvm.artId
+                             select new
+                             {
+                                 artID = ap.IdArtPiece,
+                                 Title = aw.ArtWorkTitle
+                             }).Single();
 
-                              });
-            
-            return View(newInvoice);
+            // Get access to the customer and agent involved in the sale
+            var custAndAgentID = (from c in _context.Customer
+
+                                join ag in _context.Agent
+                                on c.IdAgent equals ag.IdAgent
+
+                                where c.IdCustomer == ccvm.SelectedCustID
+                                select new CustAndAgentViewModel
+                                {
+                                    cust = c.IdCustomer,
+                                    agent = ag.IdAgent,
+                                    PaymentMethod = "Visa",
+                                    ShippingAddress = c.CustomerAddress,
+                                    PieceSold = PieceSold.Title
+                                }).Single();
+
+            // Create a new Invoice
+            Invoice _invoice = new Invoice
+            {
+                IdCustomer = ccvm.SelectedCustID,
+                IdAgent = custAndAgentID.agent,
+                PaymentMethod = custAndAgentID.PaymentMethod,
+                ShippingAddress = custAndAgentID.ShippingAddress,
+                PieceSold = custAndAgentID.PieceSold
+            };
+            _context.Invoice.Add(_invoice);
+            _context.SaveChanges();
+
+            // Get access to the invoice you just created to connect it to the InvoiceArtPiece and InvoiceLineItem Tables
+            var InvoiceId = (from i in _context.Invoice
+                             orderby i.IdInvoice
+                             select new
+                             {
+                                 ID = i.IdInvoice
+                             }).Last();
+
+            InvoiceArtPiece iap = new InvoiceArtPiece
+            {
+                IdInvoice = InvoiceId.ID,
+                IdArtPiece = ccvm.artId
+            };
+            _context.InvoiceArtPiece.Add(iap);
+            _context.SaveChanges();
+
+            // Access the ArtPiece to update that it has been sold
+            var _ap = (from ap in _context.ArtPiece
+                       where ap.IdArtPiece == ccvm.artId
+                       select new ArtPiece
+                       {
+                           IdArtPiece = ap.IdArtPiece,
+                           ArtPieceSold = true,
+                           ArtPieceDateCreated = ap.ArtPieceDateCreated,
+                           ArtPieceEditionNum = ap.ArtPieceEditionNum,
+                           ArtPieceImage = ap.ArtPieceImage,
+                           ArtPieceLocation = ap.ArtPieceLocation,
+                           ArtPiecePrice = ap.ArtPiecePrice,
+                           IdArtWork = ap.IdArtWork
+                       });
+            _context.Update(_ap);
+            _context.SaveChanges();
+
+            return RedirectToAction("Inventory");
         }
 
 
