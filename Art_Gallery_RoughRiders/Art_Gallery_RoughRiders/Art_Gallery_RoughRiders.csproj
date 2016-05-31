@@ -162,7 +162,9 @@
     <Compile Include="ViewModels\ArtPieceInfoViewModel.cs" />
     <Compile Include="ViewModels\ArtShowViewModel.cs" />
     <Compile Include="ViewModels\CurrentCustomersViewModel.cs" />
+    <Compile Include="ViewModels\CustAndAgentViewModel.cs" />
     <Compile Include="ViewModels\InventoryViewModel.cs" />
+    <Compile Include="ViewModels\InvoiceIdViewModel.cs" />
     <Compile Include="ViewModels\InvoiceListViewModel.cs" />
     <Compile Include="ViewModels\InvoiceViewModel.cs" />
     <Compile Include="ViewModels\SalesArtYTDViewModel.cs" />

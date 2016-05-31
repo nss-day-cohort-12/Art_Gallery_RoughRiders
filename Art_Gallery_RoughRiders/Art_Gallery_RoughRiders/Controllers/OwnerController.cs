@@ -11,7 +11,13 @@ namespace Art_Gallery_RoughRiders.Controllers
 {
   public class OwnerController : Controller
   {
-    private ArtGalleryDbContext _context = new ArtGalleryDbContext();
+        private ArtGalleryDbContext _context;
+
+        public OwnerController(ArtGalleryDbContext context)
+        {
+            _context = context;
+        }
+        //private ArtGalleryDbContext _context = new ArtGalleryDbContext();
 
     // GET: Owner
     public ActionResult OwnerIndex()
@@ -352,6 +358,7 @@ namespace Art_Gallery_RoughRiders.Controllers
         [HttpPost]
         public ActionResult SignUp(CurrentCustomersViewModel ccvm)
         {
+
             var artId = ccvm.artId;
             // Get access to the piece sold
             var PieceSold = (from ap in _context.ArtPiece
@@ -397,10 +404,10 @@ namespace Art_Gallery_RoughRiders.Controllers
             // Get access to the invoice you just created to connect it to the InvoiceArtPiece and InvoiceLineItem Tables
             var InvoiceId = (from i in _context.Invoice
                              orderby i.IdInvoice
-                             select new
+                             select new InvoiceIdViewModel
                              {
                                  ID = i.IdInvoice
-                             }).Last();
+                             }).ToList().Last();
 
             InvoiceArtPiece iap = new InvoiceArtPiece
             {
@@ -411,6 +418,7 @@ namespace Art_Gallery_RoughRiders.Controllers
             _context.SaveChanges();
 
             // Access the ArtPiece to update that it has been sold
+
             var _ap = (from ap in _context.ArtPiece
                        where ap.IdArtPiece == ccvm.artId
                        select new ArtPiece
@@ -423,9 +431,24 @@ namespace Art_Gallery_RoughRiders.Controllers
                            ArtPieceLocation = ap.ArtPieceLocation,
                            ArtPiecePrice = ap.ArtPiecePrice,
                            IdArtWork = ap.IdArtWork
-                       });
-            _context.Update(_ap);
+                       }).Single();
+
+            //ArtPiece _ap = _context.ArtPiece
+            //    .Where(app => app.IdArtPiece == artId).FirstOrDefault();
+
+            if (_ap != null)
+            {
+                // Just updating one property to demonstrate....
+                _context.Entry(_ap).CurrentValues.SetValues(_ap);
+            }
+            
             _context.SaveChanges();
+
+            //if (ModelState.IsValid)
+            //{
+            //    _context.ArtPiece.Update(_ap);
+            //    _context.SaveChanges();
+            //}
 
             return RedirectToAction("Inventory");
         }
