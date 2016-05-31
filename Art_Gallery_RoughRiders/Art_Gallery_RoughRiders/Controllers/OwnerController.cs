@@ -2,6 +2,7 @@
 using Art_Gallery_RoughRiders.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -11,13 +12,7 @@ namespace Art_Gallery_RoughRiders.Controllers
 {
   public class OwnerController : Controller
   {
-        private ArtGalleryDbContext _context;
-
-        public OwnerController(ArtGalleryDbContext context)
-        {
-            _context = context;
-        }
-        //private ArtGalleryDbContext _context = new ArtGalleryDbContext();
+        private ArtGalleryDbContext _context = new ArtGalleryDbContext();
 
     // GET: Owner
     public ActionResult OwnerIndex()
@@ -331,12 +326,7 @@ namespace Art_Gallery_RoughRiders.Controllers
 
 
 
-
-
-
-
-      
-        //[HttpPost]
+        
         public ActionResult SignUp(int artId)
         {
             IEnumerable<SelectListItem> selectList =
@@ -358,7 +348,6 @@ namespace Art_Gallery_RoughRiders.Controllers
         [HttpPost]
         public ActionResult SignUp(CurrentCustomersViewModel ccvm)
         {
-
             var artId = ccvm.artId;
             // Get access to the piece sold
             var PieceSold = (from ap in _context.ArtPiece
@@ -421,66 +410,36 @@ namespace Art_Gallery_RoughRiders.Controllers
 
             var _ap = (from ap in _context.ArtPiece
                        where ap.IdArtPiece == ccvm.artId
-                       select new ArtPiece
+                       select new ArtPieceUpdateViewModel
                        {
                            IdArtPiece = ap.IdArtPiece,
                            ArtPieceSold = true,
-                           ArtPieceDateCreated = ap.ArtPieceDateCreated,
+                           ArtPieceDateCreated = ap.ArtPieceDateCreated.ToString(),
                            ArtPieceEditionNum = ap.ArtPieceEditionNum,
                            ArtPieceImage = ap.ArtPieceImage,
                            ArtPieceLocation = ap.ArtPieceLocation,
                            ArtPiecePrice = ap.ArtPiecePrice,
                            IdArtWork = ap.IdArtWork
                        }).Single();
-
-            //ArtPiece _ap = _context.ArtPiece
-            //    .Where(app => app.IdArtPiece == artId).FirstOrDefault();
-
-            if (_ap != null)
+            // Create a new local ArtPiece to send and update the database table
+            ArtPiece AP = new ArtPiece
             {
-                // Just updating one property to demonstrate....
-                _context.Entry(_ap).CurrentValues.SetValues(_ap);
-            }
-            
+                ArtPieceDateCreated = Int32.Parse(_ap.ArtPieceDateCreated),
+                ArtPieceEditionNum = _ap.ArtPieceEditionNum,
+                ArtPieceImage = _ap.ArtPieceImage,
+                ArtPieceLocation = _ap.ArtPieceLocation,
+                ArtPiecePrice = _ap.ArtPiecePrice,
+                ArtPieceSold = _ap.ArtPieceSold,
+                IdArtPiece = _ap.IdArtPiece,
+                IdArtWork = _ap.IdArtWork
+            };
+
+         
+            //_context.Entry(AP).State = EntityState.Modified;
+            _context.ArtPiece.Attach(AP);
+            _context.Entry(AP).State = EntityState.Modified;
             _context.SaveChanges();
-
-            //if (ModelState.IsValid)
-            //{
-            //    _context.ArtPiece.Update(_ap);
-            //    _context.SaveChanges();
-            //}
-
             return RedirectToAction("Inventory");
         }
-
-
-
-
-
-
-
-
-
-
-
-
-        //public ActionResult SellArt(int agentId)
-        //{
-        //    // Access all current customers
-        //    var currentCustomers = (from c in _context.Customer
-        //                            select new
-        //                            {
-        //                                custID = c.IdCustomer,
-        //                                custName = c.CustomerFirstName + " " + c.CustomerLastName
-        //                            }).ToList();
-
-        //    // Create new drop down list
-        //    var model = new CurrentCustomersViewModel();
-
-        //    model.Customers = GetSelectListItems(currentCustomers);
-
-        //    // Set all customers to the drop down list
-        //    return View();
-        //}
     }
 }
