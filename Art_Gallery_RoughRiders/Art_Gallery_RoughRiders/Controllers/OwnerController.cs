@@ -37,7 +37,8 @@ namespace Art_Gallery_RoughRiders.Controllers
                             Edition = ap.ArtPieceEditionNum,
                             ArtGalleryCost = ap.ArtPiecePrice / 2,
                             IMG = ap.ArtPieceImage,
-                            isSold = ap.ArtPieceSold ? "Sold" : ""
+                            isSold = ap.ArtPieceSold ? "Sold" : "",
+                            boolIsSold = ap.ArtPieceSold
                           }).ToList();
 
       return View(allArtPieces);
@@ -315,5 +316,84 @@ namespace Art_Gallery_RoughRiders.Controllers
       Allinvoices.InvoiceModels = _localInvoices;
       return View(Allinvoices);
     }
-  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
+        //[HttpPost]
+        public ActionResult SignUp(int artId)
+        {
+            IEnumerable<SelectListItem> selectList =
+            from c in _context.Customer
+            select new SelectListItem
+            {
+                Text = c.CustomerFirstName + " " + c.CustomerLastName,
+                Value = c.IdCustomer.ToString()
+            };
+
+            CurrentCustomersViewModel artWorkList = new CurrentCustomersViewModel
+            {
+                CustList = selectList,
+                artId = artId
+            };
+            return View(artWorkList);
+        }
+
+        [HttpPost]
+        public ActionResult SignUp(CurrentCustomersViewModel ccvm)
+        {
+            var idartsit = ccvm.artId;
+            var newInvoice = (from c in _context.Customer
+
+                              join ag in _context.Agent
+                              on c.IdAgent equals ag.IdAgent
+
+                              select new
+                              {
+
+                              });
+            
+            return View(newInvoice);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+        //public ActionResult SellArt(int agentId)
+        //{
+        //    // Access all current customers
+        //    var currentCustomers = (from c in _context.Customer
+        //                            select new
+        //                            {
+        //                                custID = c.IdCustomer,
+        //                                custName = c.CustomerFirstName + " " + c.CustomerLastName
+        //                            }).ToList();
+
+        //    // Create new drop down list
+        //    var model = new CurrentCustomersViewModel();
+
+        //    model.Customers = GetSelectListItems(currentCustomers);
+
+        //    // Set all customers to the drop down list
+        //    return View();
+        //}
+    }
 }
