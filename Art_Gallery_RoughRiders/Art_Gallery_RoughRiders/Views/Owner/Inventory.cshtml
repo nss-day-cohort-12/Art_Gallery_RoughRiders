@@ -21,9 +21,10 @@
         <div class="col-md-2"><h3>Title:</h3> </div>
         <div class="col-md-2"><h3>Edition:</h3> </div>
         <div class="col-md-2"><h3>Cost:</h3></div>
-        <div class="col-md-2"><h3>Retail:</h3></div>
+        <div class="col-md-1"><h3>Retail:</h3></div>
         <div class="col-md-1"><h3>IMG:</h3></div>
         <div class="col-md-1"><h3>Sold:</h3></div>
+        <div class="col-md-1"><h3>Edit:</h3></div>
     </div>
 </div>
 
@@ -36,10 +37,11 @@
             <div class="col-md-2">@Html.DisplayFor(modelItem => item.Artist)</div>
             <div class="col-md-2">@Html.DisplayFor(modelItem => item.ArtWorkTitle) </div>
             <div class="col-md-2">@Html.DisplayFor(modelItem => item.Edition)</div>
-            <div class="col-md-2">@Html.DisplayFor(modelItem => item.ArtGalleryCost)</div>
-            <div class="col-md-2">@Html.DisplayFor(modelItem => item.ArtPiecePrice)</div>
+            <div class="col-md-2">$@Html.DisplayFor(modelItem => item.ArtGalleryCost)</div>
+            <div class="col-md-1">$@Html.DisplayFor(modelItem => item.ArtPiecePrice)</div>
             <div class="col-md-1"><a href='@Html.DisplayFor(modelItem => item.IMG)'>IMG</a></div>
             <div class="col-md-1">@Html.DisplayFor(modelItem => item.isSold)</div>
+            <div class="col-md-1">@Html.ActionLink("Edit", "EditPaintings", new { artId = item.IdArtPiece })</div>
         </div>
     }
 </div>

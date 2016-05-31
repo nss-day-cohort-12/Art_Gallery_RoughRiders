@@ -49,21 +49,6 @@ namespace Art_Gallery_RoughRiders.Controllers
     {
       var ExistingArtists = (from a in _context.Artist
                              select a).ToList();
-
-      //DropDownList ArtistDDList = new DropDownList();
-
-      //ArtistDDList.ID = ;
-      //ArtistDDList.AutoPostBack = true;
-      //Artist existingArtsit = new Artist
-      //{
-      //    ArtistName = ExistingArtists
-      //};
-
-      //AddArtViewModel av = new AddArtViewModel
-      //{
-      //    ExistingArtist = ExistingArtists
-      //};
-
       return View();
     }
 
@@ -75,7 +60,6 @@ namespace Art_Gallery_RoughRiders.Controllers
 
       if (ModelState.IsValid)
       {
-
         // If the artist the user entered already exists, use that artist's ID
         var _artistNameCheck = (from a in _context.Artist
                                 select new
@@ -174,12 +158,185 @@ namespace Art_Gallery_RoughRiders.Controllers
       return View();
     }
 
-    //View all sold artwork, cost, and profit, total sales(week/month/year), current profit (week/month/year))
-    public ActionResult Accounting()
+    [HttpGet]
+        public ActionResult EditPaintings(int? artId)
+        {
+            var ArtToEdit = (from a in _context.Artist
+                             join aww in _context.ArtWork
+                             on a.IdArtist equals aww.IdArtist
+
+                             join app in _context.ArtPiece
+                             on aww.IdArtWork equals app.IdArtWork
+
+                             where app.IdArtPiece == artId
+                             select new 
+                             {
+                                 artistName = a.ArtistName,
+                                 artistBYear = a.ArtistBirthYear,
+                                 artistDYear = a.ArtistDeathYear,
+
+                                 APImage = app.ArtPieceImage,
+                                 dateCreated = app.ArtPieceDateCreated,
+                                 APPrice = app.ArtPiecePrice,
+                                 APSold = app.ArtPieceSold,
+                                 APLocation = app.ArtPieceLocation,
+                                 APEdition = app.ArtPieceEditionNum,
+
+                                 Title = aww.ArtWorkTitle,
+                                 AWYear = aww.ArtWorkYear,
+                                 AWMedi = aww.ArtWorkMedium,
+                                 AWDim = aww.ArtWorkDimensions,
+                                 AWNumMade = aww.ArtWorkNumMade,
+                                 AWinInventory = aww.ArtWorkNumInventory,
+                                 AWNumSold = aww.ArtWorkNumSold
+                             }).Single();
+
+            Artist artist = new Artist
+            {
+                ArtistName = ArtToEdit.artistName,
+                ArtistBirthYear = ArtToEdit.artistBYear,
+                ArtistDeathYear = ArtToEdit.artistDYear
+            };
+
+            ArtPiece ap = new ArtPiece
+            {
+                ArtPieceImage = ArtToEdit.APImage,
+                ArtPieceDateCreated = ArtToEdit.dateCreated,
+                ArtPiecePrice = ArtToEdit.APPrice,
+                ArtPieceSold = ArtToEdit.APSold,
+                ArtPieceLocation = ArtToEdit.APLocation,
+                ArtPieceEditionNum = ArtToEdit.APEdition
+            };
+
+            ArtWork aw = new ArtWork
+            {
+                ArtWorkTitle = ArtToEdit.Title,
+                ArtWorkYear = ArtToEdit.AWYear,
+                ArtWorkMedium = ArtToEdit.AWMedi,
+                ArtWorkDimensions = ArtToEdit.AWDim,
+                ArtWorkNumMade = ArtToEdit.AWNumMade,
+                ArtWorkNumInventory = ArtToEdit.AWinInventory,
+                ArtWorkNumSold = ArtToEdit.AWNumSold
+            };
+
+            AddArtViewModel aavm = new AddArtViewModel
+            {
+                newArtist = artist,
+                ArtPiece = ap,
+                ArtWork = aw
+            };
+
+            return View(aavm);
+        }
+
+        [HttpPost]
+        public ActionResult EditPaintings(AddArtViewModel Art)
+        {
+            // Set the instance of a local view model to set the ID of either the existing artist, or the new artist we will create
+            ArtistViewModel local_artist = new ArtistViewModel();
+
+            if (ModelState.IsValid)
+            {
+                // If the artist the user entered already exists, use that artist's ID
+                var _artistNameCheck = (from a in _context.Artist
+                                        select new
+                                        {
+                                            IdArtist = a.IdArtist,
+                                            ArtistName = a.ArtistName
+                                        }).ToList();
+
+                bool NameCheck = false;
+                foreach (var item in _artistNameCheck)
+                {
+
+                    if (item.ArtistName == Art.newArtist.ArtistName)
+                    {
+                        NameCheck = true;
+                    }
+                }
+
+
+                // This is the case where the artist already exists in the database
+                if (NameCheck == true)
+                {
+                    // Set a new instance of a private artist with the properties from the database
+                    var _artist = (from a in _context.Artist
+                                   where a.ArtistName == Art.newArtist.ArtistName
+                                   select new ArtistViewModel
+                                   {
+                                       ID = a.IdArtist
+                                   }).Single();
+                    local_artist = _artist;
+                }
+                else
+                {
+                    //Since this is a new Artist: Set local artist model to the data set by the user, passed into the add paiting override method.
+                    Artist artist = new Artist
+                    {
+                        ArtistName = Art.newArtist.ArtistName,
+                        ArtistBirthYear = Art.newArtist.ArtistBirthYear,
+                        ArtistDeathYear = Art.newArtist.ArtistDeathYear
+                    };
+                    _context.Artist.Add(artist);
+                    _context.SaveChanges();
+
+                    var _artist = (from a in _context.Artist
+                                   where a.ArtistName == Art.newArtist.ArtistName
+                                   select new ArtistViewModel
+                                   {
+                                       ID = a.IdArtist
+                                   }).Single();
+                    local_artist = _artist;
+                }
+
+
+                //Set a private variable = to the artist the user just created.
+
+                //Set local artwork model to the data set by the user, passed into the add paiting override method.
+                ArtWork artwork = new ArtWork
+                {
+                    IdArtist = local_artist.ID,
+                    ArtWorkDimensions = Art.ArtWork.ArtWorkDimensions,
+                    ArtWorkTitle = Art.ArtWork.ArtWorkTitle,
+                    ArtWorkYear = Art.ArtWork.ArtWorkYear,
+                    ArtWorkMedium = Art.ArtWork.ArtWorkMedium,
+                    ArtWorkNumMade = 1,
+                    ArtWorkNumInventory = 1,
+                    ArtWorkNumSold = 0
+                };
+                _context.ArtWork.Add(artwork);
+                _context.SaveChanges();
+
+                //Set a private variable = to the artwork the user just created.
+                var _artWork = (from aw in _context.ArtWork
+                                where aw.ArtWorkTitle == Art.ArtWork.ArtWorkTitle
+                                select new
+                                {
+                                    IdArtWork = aw.IdArtWork,
+                                }).Single();
+
+                //Set local artpiece model to the data set by the user, passed into the AddPaiting override method.
+                ArtPiece artPiece = new ArtPiece
+                {
+                    IdArtWork = _artWork.IdArtWork,
+                    ArtPieceImage = Art.ArtPiece.ArtPieceImage,
+                    ArtPieceDateCreated = Art.ArtPiece.ArtPieceDateCreated,
+                    ArtPiecePrice = Art.ArtPiece.ArtPiecePrice,
+                    ArtPieceSold = false,
+                    ArtPieceLocation = Art.ArtPiece.ArtPieceLocation,
+                    ArtPieceEditionNum = 1
+                };
+                _context.ArtPiece.Add(artPiece);
+                _context.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
+
+            return View();
+        }
+        //View all sold artwork, cost, and profit, total sales(week/month/year), current profit (week/month/year))
+        public ActionResult Accounting()
     {
-
-
-
       var artSold = (from ap in _context.ArtPiece
                      join aw in _context.ArtWork
                      on ap.IdArtWork equals aw.IdArtWork
@@ -239,7 +396,6 @@ namespace Art_Gallery_RoughRiders.Controllers
 
     public ActionResult AgentInvoiceDetails(int agentId)
     {
-
       var invoiceDetails = (from c in _context.Customer
                             join i in _context.Invoice
                             on c.IdCustomer equals i.IdCustomer
@@ -277,7 +433,6 @@ namespace Art_Gallery_RoughRiders.Controllers
                             }
                             by i.IdInvoice into newGroup
                             select newGroup).ToList();
-
 
       // Create a father VM that will cointains a list of tickets
       InvoiceListViewModel Allinvoices = new InvoiceListViewModel();

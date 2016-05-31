@@ -10,7 +10,6 @@ namespace Art_Gallery_RoughRiders.ViewModels
     public class AddArtViewModel
     {
         public Artist newArtist { get; set; }
-        public DropDownList ExistingArtist { get; set; }
         public ArtPiece ArtPiece { get; set; }
         public ArtWork ArtWork { get; set; }
     }

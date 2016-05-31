@@ -1,0 +1,73 @@
+﻿@model Art_Gallery_RoughRiders.ViewModels.AddArtViewModel
+@{
+    ViewBag.Title = "EditPaintings";
+}
+
+<h2>EditPaintings</h2>
+@using (Html.BeginForm())
+{
+    //Artist
+
+    @Html.Label("Artist Name")
+    @Html.EditorFor(model => model.newArtist.ArtistName)
+    <br>
+
+    @Html.Label("Birth Year")
+    @Html.EditorFor(model => model.newArtist.ArtistBirthYear)
+    <br>
+
+    @Html.Label("Death Year")
+    @Html.EditorFor(model => model.newArtist.ArtistDeathYear)
+    <br>
+
+
+    //ArtWork
+
+    @Html.Label("Art Work Title")
+    @Html.EditorFor(model => model.ArtWork.ArtWorkTitle)
+    <br>
+
+    @Html.Label("Art Work Year")
+    @Html.EditorFor(model => model.ArtWork.ArtWorkYear)
+    <br>
+
+    @Html.Label("Art Work Medium")
+    @Html.EditorFor(model => model.ArtWork.ArtWorkMedium)
+    <br>
+
+    @Html.Label("Art Work Diminsions")
+    @Html.EditorFor(model => model.ArtWork.ArtWorkDimensions)
+    <br>
+
+
+
+    //ArtPiece
+
+
+    @Html.Label("Image")
+    @Html.EditorFor(model => model.ArtPiece.ArtPieceImage)
+    <br>
+
+    @Html.Label("Date Edition Was Created")
+    @Html.EditorFor(model => model.ArtPiece.ArtPieceDateCreated)
+    <br>
+
+    @Html.Label("Price")
+    @Html.EditorFor(model => model.ArtPiece.ArtPiecePrice)
+    <br>
+
+    @Html.Label("Location")
+    @Html.EditorFor(model => model.ArtPiece.ArtPieceLocation)
+    <br>
+
+    <input type="submit" value="Register" />
+
+}
+@*@Html.DropDownList("Choose an Artist", Model.ExistingArtist)*@
+
+
+
+
+
+
+
