@@ -160,8 +160,12 @@
     <Compile Include="ViewModels\ArtDisplayViewModel.cs" />
     <Compile Include="ViewModels\ArtistViewModel.cs" />
     <Compile Include="ViewModels\ArtPieceInfoViewModel.cs" />
+    <Compile Include="ViewModels\ArtPieceUpdateViewModel.cs" />
     <Compile Include="ViewModels\ArtShowViewModel.cs" />
+    <Compile Include="ViewModels\CurrentCustomersViewModel.cs" />
+    <Compile Include="ViewModels\CustAndAgentViewModel.cs" />
     <Compile Include="ViewModels\InventoryViewModel.cs" />
+    <Compile Include="ViewModels\InvoiceIdViewModel.cs" />
     <Compile Include="ViewModels\InvoiceListViewModel.cs" />
     <Compile Include="ViewModels\InvoiceViewModel.cs" />
     <Compile Include="ViewModels\SalesArtYTDViewModel.cs" />
@@ -187,6 +191,7 @@
     <Content Include="Views\Owner\AgentRoster.cshtml" />
     <Content Include="Views\Owner\AgentInvoiceDetails.cshtml" />
     <Content Include="Views\Home\Events.cshtml" />
+    <Content Include="Views\Owner\SignUp.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

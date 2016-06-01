@@ -2,6 +2,7 @@
 using Art_Gallery_RoughRiders.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -11,7 +12,7 @@ namespace Art_Gallery_RoughRiders.Controllers
 {
   public class OwnerController : Controller
   {
-    private ArtGalleryDbContext _context = new ArtGalleryDbContext();
+        private ArtGalleryDbContext _context = new ArtGalleryDbContext();
 
     // GET: Owner
     public ActionResult OwnerIndex()
@@ -37,7 +38,8 @@ namespace Art_Gallery_RoughRiders.Controllers
                             Edition = ap.ArtPieceEditionNum,
                             ArtGalleryCost = ap.ArtPiecePrice / 2,
                             IMG = ap.ArtPieceImage,
-                            isSold = ap.ArtPieceSold ? "Sold" : ""
+                            isSold = ap.ArtPieceSold ? "Sold" : "",
+                            boolIsSold = ap.ArtPieceSold
                           }).ToList();
 
       return View(allArtPieces);
@@ -49,21 +51,6 @@ namespace Art_Gallery_RoughRiders.Controllers
     {
       var ExistingArtists = (from a in _context.Artist
                              select a).ToList();
-
-      //DropDownList ArtistDDList = new DropDownList();
-
-      //ArtistDDList.ID = ;
-      //ArtistDDList.AutoPostBack = true;
-      //Artist existingArtsit = new Artist
-      //{
-      //    ArtistName = ExistingArtists
-      //};
-
-      //AddArtViewModel av = new AddArtViewModel
-      //{
-      //    ExistingArtist = ExistingArtists
-      //};
-
       return View();
     }
 
@@ -168,7 +155,7 @@ namespace Art_Gallery_RoughRiders.Controllers
         _context.ArtPiece.Add(artPiece);
         _context.SaveChanges();
 
-        return RedirectToAction("Index");
+        return RedirectToAction("Inventory");
       }
 
       return View();
@@ -315,5 +302,129 @@ namespace Art_Gallery_RoughRiders.Controllers
       Allinvoices.InvoiceModels = _localInvoices;
       return View(Allinvoices);
     }
-  }
+
+
+
+
+
+
+
+
+
+        
+        public ActionResult SignUp(int artId)
+        {
+            IEnumerable<SelectListItem> selectList =
+            from c in _context.Customer
+            select new SelectListItem
+            {
+                Text = c.CustomerFirstName + " " + c.CustomerLastName,
+                Value = c.IdCustomer.ToString()
+            };
+
+            CurrentCustomersViewModel artWorkList = new CurrentCustomersViewModel
+            {
+                CustList = selectList,
+                artId = artId
+            };
+            return View(artWorkList);
+        }
+
+        [HttpPost]
+        public ActionResult SignUp(CurrentCustomersViewModel ccvm)
+        {
+            var artId = ccvm.artId;
+            // Get access to the piece sold
+            var PieceSold = (from ap in _context.ArtPiece
+
+                             join aw in _context.ArtWork
+                             on ap.IdArtWork equals aw.IdArtWork
+
+                             where ap.IdArtPiece == ccvm.artId
+                             select new
+                             {
+                                 artID = ap.IdArtPiece,
+                                 Title = aw.ArtWorkTitle
+                             }).Single();
+
+            // Get access to the customer and agent involved in the sale
+            var custAndAgentID = (from c in _context.Customer
+
+                                join ag in _context.Agent
+                                on c.IdAgent equals ag.IdAgent
+
+                                where c.IdCustomer == ccvm.SelectedCustID
+                                select new CustAndAgentViewModel
+                                {
+                                    cust = c.IdCustomer,
+                                    agent = ag.IdAgent,
+                                    PaymentMethod = "Visa",
+                                    ShippingAddress = c.CustomerAddress,
+                                    PieceSold = PieceSold.Title
+                                }).Single();
+
+            // Create a new Invoice
+            Invoice _invoice = new Invoice
+            {
+                IdCustomer = ccvm.SelectedCustID,
+                IdAgent = custAndAgentID.agent,
+                PaymentMethod = custAndAgentID.PaymentMethod,
+                ShippingAddress = custAndAgentID.ShippingAddress,
+                PieceSold = custAndAgentID.PieceSold
+            };
+            _context.Invoice.Add(_invoice);
+            _context.SaveChanges();
+
+            // Get access to the invoice you just created to connect it to the InvoiceArtPiece and InvoiceLineItem Tables
+            var InvoiceId = (from i in _context.Invoice
+                             orderby i.IdInvoice
+                             select new InvoiceIdViewModel
+                             {
+                                 ID = i.IdInvoice
+                             }).ToList().Last();
+
+            InvoiceArtPiece iap = new InvoiceArtPiece
+            {
+                IdInvoice = InvoiceId.ID,
+                IdArtPiece = ccvm.artId
+            };
+            _context.InvoiceArtPiece.Add(iap);
+            _context.SaveChanges();
+
+            // Access the ArtPiece to update that it has been sold
+
+            var _ap = (from ap in _context.ArtPiece
+                       where ap.IdArtPiece == ccvm.artId
+                       select new ArtPieceUpdateViewModel
+                       {
+                           IdArtPiece = ap.IdArtPiece,
+                           ArtPieceSold = true,
+                           ArtPieceDateCreated = ap.ArtPieceDateCreated,
+                           ArtPieceEditionNum = ap.ArtPieceEditionNum,
+                           ArtPieceImage = ap.ArtPieceImage,
+                           ArtPieceLocation = ap.ArtPieceLocation,
+                           ArtPiecePrice = ap.ArtPiecePrice,
+                           IdArtWork = ap.IdArtWork
+                       }).Single();
+            // Create a new local ArtPiece to send and update the database table
+            ArtPiece AP = new ArtPiece
+            {
+                ArtPieceDateCreated = _ap.ArtPieceDateCreated,
+                ArtPieceEditionNum = _ap.ArtPieceEditionNum,
+                ArtPieceImage = _ap.ArtPieceImage,
+                ArtPieceLocation = _ap.ArtPieceLocation,
+                ArtPiecePrice = _ap.ArtPiecePrice,
+                ArtPieceSold = _ap.ArtPieceSold,
+                IdArtPiece = _ap.IdArtPiece,
+                IdArtWork = _ap.IdArtWork
+            };
+
+         
+            //_context.Entry(AP).State = EntityState.Modified;
+            _context.ArtPiece.Attach(AP);
+            _context.Entry(AP).State = EntityState.Modified;
+            _context.SaveChanges();
+            return RedirectToAction("Inventory");
+        }
+    }
 }
