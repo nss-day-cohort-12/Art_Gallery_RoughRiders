@@ -15,5 +15,6 @@ namespace Art_Gallery_RoughRiders.ViewModels
         public decimal ArtGalleryCost { get; set; }
         public string IMG { get; set; }
         public string isSold { get; set; }
+        public bool boolIsSold { get; set; }
     }
 }

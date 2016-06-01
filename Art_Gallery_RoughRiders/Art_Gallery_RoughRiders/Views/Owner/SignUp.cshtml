@@ -1,0 +1,22 @@
+﻿@model Art_Gallery_RoughRiders.ViewModels.CurrentCustomersViewModel
+
+@{ ViewBag.Title = "Sell Art"; }
+
+<h1>Create New Invoice</h1>
+
+@using (Html.BeginForm())
+{
+    <div class="form-group">
+        <label class="control-label col-md-2">Customer</label>
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.SelectedCustID, Model.CustList)
+        </div>
+    </div>
+    @Html.Hidden(Model.artId.ToString())
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Create New Invoice" class="btn btn-default" />
+        </div>
+    </div>
+
+}
