@@ -7,10 +7,10 @@
 <table>
     <tr>
         <td>
-            @Html.ActionLink("Customer View", "Customer")
+            <a href="@Url.Action("Inventory", "Owner")" class="thumbnail">Owner</a>
         </td>
         <td>
-            <a href="@Url.Action("OwnerIndex", "Owner")" class="thumbnail">Owner</a>
+            <a href="@Url.Action("Customer", "Home")" class="thumbnail">Customer View</a>
         </td>
     </tr>
 </table>
