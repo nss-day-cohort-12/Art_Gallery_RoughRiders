@@ -184,7 +184,6 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Home\Customer.cshtml" />
     <Content Include="Views\Home\ArtDetails.cshtml" />
-    <Content Include="Views\Owner\OwnerIndex.cshtml" />
     <Content Include="Views\Owner\Inventory.cshtml" />
     <Content Include="Views\Owner\AddPainting.cshtml" />
     <Content Include="Views\Owner\Accounting.cshtml" />

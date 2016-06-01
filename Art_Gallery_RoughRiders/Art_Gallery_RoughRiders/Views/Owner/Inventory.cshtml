@@ -3,18 +3,22 @@
     ViewBag.Title = "Inventory";
 }
 
-<h2>Inventory</h2>
+<h2>Owner</h2>
 <table>
     <tr>
         <td>
             <a href="@Url.Action("Accounting", "Owner")" class="thumbnail">Accounting</a>
         </td>
         <td>
-            @Html.ActionLink("Add Art Piece", "AddPainting")
+            <a href="@Url.Action("AddPainting", "Owner")" class="thumbnail">Add Art Piece</a>
+        </td>
+        <td>
+            <a href="@Url.Action("AgentRoster", "Owner")" class="thumbnail">Agent Roster</a>
         </td>
     </tr>
 </table>
 
+<h2>Inventory</h2>
 <div class="container">
     <div class="row">
         <div class="col-md-2"><h3>Artist:</h3></div>
