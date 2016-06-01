@@ -51,21 +51,6 @@ namespace Art_Gallery_RoughRiders.Controllers
     {
       var ExistingArtists = (from a in _context.Artist
                              select a).ToList();
-
-      //DropDownList ArtistDDList = new DropDownList();
-
-      //ArtistDDList.ID = ;
-      //ArtistDDList.AutoPostBack = true;
-      //Artist existingArtsit = new Artist
-      //{
-      //    ArtistName = ExistingArtists
-      //};
-
-      //AddArtViewModel av = new AddArtViewModel
-      //{
-      //    ExistingArtist = ExistingArtists
-      //};
-
       return View();
     }
 
@@ -170,7 +155,7 @@ namespace Art_Gallery_RoughRiders.Controllers
         _context.ArtPiece.Add(artPiece);
         _context.SaveChanges();
 
-        return RedirectToAction("Index");
+        return RedirectToAction("Inventory");
       }
 
       return View();
@@ -414,7 +399,7 @@ namespace Art_Gallery_RoughRiders.Controllers
                        {
                            IdArtPiece = ap.IdArtPiece,
                            ArtPieceSold = true,
-                           ArtPieceDateCreated = ap.ArtPieceDateCreated.ToString(),
+                           ArtPieceDateCreated = ap.ArtPieceDateCreated,
                            ArtPieceEditionNum = ap.ArtPieceEditionNum,
                            ArtPieceImage = ap.ArtPieceImage,
                            ArtPieceLocation = ap.ArtPieceLocation,
@@ -424,7 +409,7 @@ namespace Art_Gallery_RoughRiders.Controllers
             // Create a new local ArtPiece to send and update the database table
             ArtPiece AP = new ArtPiece
             {
-                ArtPieceDateCreated = Int32.Parse(_ap.ArtPieceDateCreated),
+                ArtPieceDateCreated = _ap.ArtPieceDateCreated,
                 ArtPieceEditionNum = _ap.ArtPieceEditionNum,
                 ArtPieceImage = _ap.ArtPieceImage,
                 ArtPieceLocation = _ap.ArtPieceLocation,
